@@ -1,47 +1,37 @@
 #include <iostream>
-#include "DynamicArray.h"
+#include "LinkList.h"
 
 USING_NAMESPACE(std);
 USING_NAMESPACE(ZYWLib);
 
 ZYW_INT32 main(ZYW_INT32 argc, ZYW_INT8** argv)
 {
-    DynamicArray<ZYW_INT32> s1(5);
+    LinkList<ZYW_INT32> list;
 
-    for(ZYW_INT32 i = 0; i < s1.length(); i++)
+    for(ZYW_INT32 i = 0; i < 5; i++)
     {
-        s1[i] = i * i;
+        list.insert(0, i);
+        list.set(0, i*i);
     }
 
-    for(ZYW_INT32 i = 0; i < s1.length(); i++)
+    for(ZYW_INT32 i = 0; i < list.length(); i++)
     {
-        cout << s1[i] << endl;
+        cout << list.get(i) << endl;
     }
 
-    DynamicArray<ZYW_INT32> s2(10);
+    list.remove(2);
 
-    s2 = s1;
-
-    for(ZYW_INT32 i = 0; i < s2.length(); i++)
+    for(ZYW_INT32 i = 0; i < list.length(); i++)
     {
-        cout << s2[i] << endl;
+        cout << list.get(i) << endl;
     }
 
-    s2.resize(8);
+    list.clear();
 
-    for(ZYW_INT32 i = 0; i < s2.length(); i++)
+    for(ZYW_INT32 i = 0; i < list.length(); i++)
     {
-        cout << s2[i] << endl;
+        cout << list.get(i) << endl;
     }
-
-    s2.resize(3);
-
-    for(ZYW_INT32 i = 0; i < s2.length(); i++)
-    {
-        cout << s2[i] << endl;
-    }
-
-    s2[4] = 100;
 
     return 0;
 }

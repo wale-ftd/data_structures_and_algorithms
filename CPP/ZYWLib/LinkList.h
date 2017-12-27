@@ -15,7 +15,16 @@ protected:
       Node *next;
     };
 
+#if 1
+    /* 注意：这里也要继承自Object，否则匿名类和struct Node在内存里的布局可以不同。 */
+    mutable struct : public Object {
+        ZYW_INT8 reserved[sizeof(T)];
+        Node *next;
+    } m_header;
+#else
+    /* 这样定义的头节点是用隐患的 */
     mutable Node m_header;
+#endif
     ZYW_INT32 m_length; /* 可以将链表长度信息放入header.value里，这样就可以节省内存空间了。 */
 
 public:
@@ -45,9 +54,7 @@ public:
             if(n_node)
             {
 #if 1
-                Node *cur = &m_header;
-
-                for(ZYW_INT32 j = 0; j < i; cur = cur->next, j++) {}
+                Node *cur = position(i);
 
                 n_node->value = e;
                 n_node->next = cur->next;
@@ -93,9 +100,7 @@ public:
 
         if(ret)
         {
-            Node *cur = &m_header;
-
-            for(ZYW_INT32 j = 0; j < i; cur = cur->next, j++) {}
+            Node *cur = position(i);
 
             Node *t_node = cur->next;
 
@@ -118,11 +123,7 @@ public:
 
         if(ret)
         {
-            Node *cur = &m_header;
-
-            for(ZYW_INT32 j = 0; j < i; cur = cur->next, j++) {}
-
-            cur->next->value = e;
+            position(i)->next->value = e;
         }
 
         return ret;
@@ -134,15 +135,7 @@ public:
 
         if(ret)
         {
-            /* 编译报错。在const成员函数里，不准修改任何成员变量的值。在这里
-               对成员变量取地址，编译器会认为你可以会修改成员变量的值。
-             * 解决方案：用mutable修改m_header成员变量。
-             */
-            Node *cur = &m_header;
-
-            for(ZYW_INT32 j = 0; j < i; cur = cur->next, j++) {}
-
-            e= cur->next->value;
+            e= position(i)->next->value;    /* const成员函数只能调用const成员函数，否则会编译报错 */
         }
 
         return ret;
@@ -189,6 +182,20 @@ public:
     ~LinkList()
     {
         clear();
+    }
+
+protected:
+    Node *position(ZYW_INT32 i) const
+    {
+        /* 编译报错。在const成员函数里，不准修改任何成员变量的值。在这里
+           对成员变量取地址，编译器会认为你可以会修改成员变量的值。
+         * 解决方案：用mutable修改m_header成员变量。
+         */
+        Node *ret = reinterpret_cast<Node *>(&m_header);
+
+        for(ZYW_INT32 j = 0; j < i; ret = ret->next, j++) {}
+
+        return ret;
     }
 };
 

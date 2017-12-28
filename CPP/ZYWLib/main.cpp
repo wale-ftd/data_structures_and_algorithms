@@ -4,53 +4,52 @@
 USING_NAMESPACE(std);
 USING_NAMESPACE(ZYWLib);
 
-class Test
+class Test: public Object
 {
+private:
+    ZYW_INT32 i;
+
 public:
-    Test()
+    Test(ZYW_INT32 v = 0)
     {
-        throw 0;
+        i = v;
+    }
+
+    /* 当自定义类型Test不继承Object时，并且又重载==操作符，
+       会编译报错。虽然继承了Object，但不重载==操作符，用
+       Object默认的==操作符，结果可能不正确，所以这里还是要重载一
+       下==操作符。
+     */
+    ZYW_BOOL operator ==(const Test& obj)
+    {
+        return (i == obj.i);
     }
 };
 
 ZYW_INT32 main(ZYW_INT32 argc, ZYW_INT8** argv)
 {
-#if 1
-    /* 用匿名类重新定义头节点，避开了一个互扯的问题(明明是使用者制造的问题而被抱怨是ZYWLib的问题)，使得ZYWLib更健壮。 */
-    LinkList<Test> list;
-
-    //Test t; /* 暴露问题 */
-    //list.insert(t);
-
-    cout << "Hello wale!!!" << endl;
-#else
     LinkList<ZYW_INT32> list;
 
     for(ZYW_INT32 i = 0; i < 5; i++)
     {
         list.insert(0, i);
-        list.set(0, i*i);
     }
 
-    for(ZYW_INT32 i = 0; i < list.length(); i++)
-    {
-        cout << list.get(i) << endl;
-    }
+    cout << list.find(3) << endl;
+    cout << list.find(7) << endl;
 
-    list.remove(2);
+    LinkList<Test> t_list;
+    Test t1(1);
+    Test t2(2);
+    Test t3(3);
+    Test t4(4);
 
-    for(ZYW_INT32 i = 0; i < list.length(); i++)
-    {
-        cout << list.get(i) << endl;
-    }
+    t_list.insert(t1);
+    t_list.insert(t2);
+    t_list.insert(t3);
 
-    list.clear();
-
-    for(ZYW_INT32 i = 0; i < list.length(); i++)
-    {
-        cout << list.get(i) << endl;
-    }
-#endif
+    cout << t_list.find(t2) << endl;
+    cout << t_list.find(t4) << endl;
 
     return 0;
 }

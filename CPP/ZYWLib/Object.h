@@ -11,6 +11,8 @@ public:
     void operator delete(void *p);
     void* operator new[](ZYW_UINT32 size) throw();
     void operator delete[](void *p);
+    ZYW_BOOL operator ==(const Object& obj);
+    ZYW_BOOL operator !=(const Object& obj);
 
     virtual ~Object() = 0;
 };

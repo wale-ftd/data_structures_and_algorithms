@@ -32,6 +32,16 @@ void Object::operator delete[](void *p)
     }
 }
 
+ZYW_BOOL Object::operator ==(const Object& obj)
+{
+    return (this == &obj);
+}
+
+ZYW_BOOL Object::operator !=(const Object& obj)
+{
+    return (this != &obj);
+}
+
 Object::~Object()
 {
 }

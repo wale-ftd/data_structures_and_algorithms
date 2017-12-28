@@ -153,6 +153,24 @@ public:
         return ret;
     }
 
+    ZYW_INT32 find(const T& e) const
+    {
+        ZYW_INT32 ret = -1;
+        Node *cur = m_header.next;
+
+        for(ZYW_INT32 i = 0; cur; cur = cur->next, i++)
+        {
+            if(cur->value == e)
+            {
+                ret = i;
+
+                break;
+            }
+        }
+
+        return ret;
+    }
+
     ZYW_INT32 length() const
     {
         return m_length;

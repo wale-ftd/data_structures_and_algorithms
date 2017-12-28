@@ -19,6 +19,7 @@ public:
     virtual ZYW_BOOL remove(ZYW_INT32 i) = 0;
     virtual ZYW_BOOL set(ZYW_INT32 i, const T& e) = 0;
     virtual ZYW_BOOL get(ZYW_INT32 i, T& e) const = 0;
+    virtual ZYW_INT32 find(const T& e) const = 0;
     virtual ZYW_INT32 length() const = 0;
     virtual void clear() = 0;
 };

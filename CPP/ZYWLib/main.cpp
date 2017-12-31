@@ -1,50 +1,37 @@
 #include <iostream>
-#include "LinkList.h"
+#include "StaticLinkList.h"
 
 USING_NAMESPACE(std);
 USING_NAMESPACE(ZYWLib);
 
 ZYW_INT32 main(ZYW_INT32 argc, ZYW_INT8** argv)
 {
-    LinkList<ZYW_INT32> list;
+    StaticLinkList<ZYW_INT32, 5> slist;
 
-    for(ZYW_INT32 i = 0; i < 5; i++)    /* O(n) */
+    for(ZYW_INT32 i = 0; i < 5; i++)
     {
-        list.insert(0, i);
+        slist.insert(0, i);
     }
 
-    /* 遍历链表。理论上O(n)即可完成，但这里却是O(n^2)，很奇怪吧。 */
-    for(ZYW_INT32 i = 0; i < list.length(); i++)    /* O(n^2) */
+    for(slist.move(0); !slist.end(); slist.next())
     {
-        cout << list.get(i) << endl;
-    }
-
-    cout << endl;
-
-    for(list.move(0); !list.end(); list.next()) /* O(n) */
-    {
-        cout << list.current() << endl;
+        cout << slist.current() << endl;
     }
 
     cout << endl;
 
-    for(list.move(0, 2); !list.end(); list.next()) /* O(n) */
+    try
     {
-        cout << list.current() << endl;
+        slist.insert(6);
+    }
+    catch(const Exception& e)
+    {
+        cout << e.message() << endl;
     }
 
-    cout << endl;
-
-    for(list.move(0, 3); !list.end(); list.next()) /* O(n) */
+    for(slist.move(0); !slist.end(); slist.next())
     {
-        cout << list.current() << endl;
-    }
-
-    cout << endl;
-
-    for(list.move(0, 10); !list.end(); list.next()) /* O(n) */
-    {
-        cout << list.current() << endl;
+        cout << slist.current() << endl;
     }
 
     return 0;

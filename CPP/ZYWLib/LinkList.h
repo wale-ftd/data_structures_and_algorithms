@@ -240,22 +240,9 @@ public:
     {
         ZYW_INT32 i = 0;
 
-        for(; m_cursor && (i<m_cursor_step); m_cursor = m_cursor->next, i++) {}
+        for(; (i<m_cursor_step) && m_cursor; m_cursor = m_cursor->next, i++) {}
 
         return (i == m_cursor_step);
-    }
-
-    virtual Node* create()
-    {
-        return new Node();
-    }
-
-    virtual void destroy(Node *p)
-    {
-        if(p)
-        {
-            delete p;
-        }
     }
 
     ~LinkList()
@@ -276,6 +263,19 @@ protected:
         for(ZYW_INT32 j = 0; j < i; ret = ret->next, j++) {}
 
         return ret;
+    }
+
+    virtual Node* create()
+    {
+        return new Node();
+    }
+
+    virtual void destroy(Node *pn)
+    {
+        if(pn)
+        {
+            delete pn;
+        }
     }
 };
 

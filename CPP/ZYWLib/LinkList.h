@@ -26,12 +26,16 @@ protected:
     mutable Node m_header;
 #endif
     ZYW_INT32 m_length; /* 可以将链表长度信息放入header.value里，这样就可以节省内存空间了。 */
+    Node *m_cursor;
+    ZYW_INT32 m_cursor_step;
 
 public:
     LinkList()
     {
         m_header.next = NULL;
         m_length = 0;
+        m_cursor = NULL;
+        m_cursor_step = 1;
     }
 
     ZYW_BOOL insert(ZYW_INT32 i, const T& e)
@@ -50,7 +54,7 @@ public:
 
         if(ret)
         {
-            Node *n_node = (Node *)new Node();
+            Node *n_node = create();
             if(n_node)
             {
 #if 1
@@ -110,7 +114,7 @@ public:
 
             if(t_node)
             {
-                delete t_node;
+                destroy(t_node);
             }
         }
 
@@ -187,7 +191,7 @@ public:
 
             if(t_node)
             {
-                delete t_node;
+                destroy(t_node);
             }
         }
 
@@ -197,12 +201,70 @@ public:
 #endif
     }
 
+    ZYW_BOOL move(ZYW_INT32 i, ZYW_INT32 step = 1)
+    {
+        ZYW_BOOL ret = (0<=i) && (length()>i) && (0<step);
+
+        if(ret)
+        {
+            m_cursor = position(i)->next;
+
+            m_cursor_step = step;
+        }
+
+        return ret;
+    }
+
+    ZYW_BOOL end()
+    {
+        return (NULL == m_cursor);
+    }
+
+    T current()
+    {
+        T ret;
+
+        if(!end())
+        {
+            ret = m_cursor->value;
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "No value at the current position ...");
+        }
+
+        return ret;
+    }
+
+    ZYW_BOOL next()
+    {
+        ZYW_INT32 i = 0;
+
+        for(; m_cursor && (i<m_cursor_step); m_cursor = m_cursor->next, i++) {}
+
+        return (i == m_cursor_step);
+    }
+
+    virtual Node* create()
+    {
+        return new Node();
+    }
+
+    virtual void destroy(Node *p)
+    {
+        if(p)
+        {
+            delete p;
+        }
+    }
+
     ~LinkList()
     {
         clear();
     }
 
 protected:
+    /* 定位到i的前一个。所以定位到第i个元素的使用方法是：position()->next */
     Node *position(ZYW_INT32 i) const
     {
         /* 编译报错。在const成员函数里，不准修改任何成员变量的值。在这里

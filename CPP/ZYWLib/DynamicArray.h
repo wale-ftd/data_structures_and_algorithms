@@ -77,7 +77,7 @@ protected:
     }
 
 public:
-    DynamicArray(ZYW_INT32 length)  // O(1)
+    DynamicArray(ZYW_INT32 length = 1)  // O(1)
     {
         if(0 < length)
         {

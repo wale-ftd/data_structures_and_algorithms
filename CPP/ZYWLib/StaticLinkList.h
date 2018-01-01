@@ -44,6 +44,11 @@ public:
         return N;
     }
 
+    ~StaticLinkList()
+    {
+        this->clear();  /* 这样就会调用StaticLinkList的destroy()了。否则调用的是LinkList中的destroy() */
+    }
+
 protected:
     SNode* create()
     {

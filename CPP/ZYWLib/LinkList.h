@@ -108,8 +108,16 @@ public:
 
             Node *t_node = cur->next;
 
+            if(m_cursor == t_node)
+            {
+                m_cursor = t_node->next;
+            }
+
             cur->next = t_node->next;
 
+            /* 为确保remove是异常安全(防止destroy时调用自定义类型的析构函数抛出异常时，
+               m_length还是正确)的，m_length--必须放在destroy前面。
+             */
             m_length--;
 
             if(t_node)
@@ -189,13 +197,16 @@ public:
 
             m_header.next = t_node->next;
 
+            /* 为确保clear是异常安全(防止destroy时调用自定义类型的析构函数抛出异常时，
+               m_length还是正确)的，m_length--必须放在destroy前面。
+             */
+            m_length--;
+
             if(t_node)
             {
                 destroy(t_node);
             }
         }
-
-        m_length = 0;
 #else
         for(ZYW_INT32 i = 0; i < length(); remove(0), i++) {}
 #endif

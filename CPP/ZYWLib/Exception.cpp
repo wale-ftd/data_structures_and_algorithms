@@ -14,7 +14,7 @@ void Exception::init(const char* message, const char* file, int line)
      *  指向的字符串可能位于栈、堆或者全局数据区)的生命周期。
      */
     //m_message = message;
-    m_message = strdup(message);
+    m_message = message ? strdup(message) : NULL;   /* glibc-2.20里strdup的实现中未判断message为空的情况。 */
 
     if(file)
     {

@@ -1,37 +1,38 @@
 #include <iostream>
-#include "StaticLinkList.h"
+#include "DynamicArray.h"
 
 USING_NAMESPACE(std);
 USING_NAMESPACE(ZYWLib);
 
 ZYW_INT32 main(ZYW_INT32 argc, ZYW_INT8** argv)
 {
-    StaticLinkList<ZYW_INT32, 5> slist;
+    DynamicArray< DynamicArray<ZYW_INT32> > d;
 
-    for(ZYW_INT32 i = 0; i < 5; i++)
+    d.resize(3);
+
+    for(ZYW_INT32 i = 0; i < d.length(); i++)
     {
-        slist.insert(0, i);
+        //d[i].resize(3);
+        d[i].resize(i + 1);
     }
 
-    for(slist.move(0); !slist.end(); slist.next())
+
+    for(ZYW_INT32 i = 0; i < d.length(); i++)
     {
-        cout << slist.current() << endl;
+        for(ZYW_INT32 j = 0; j < d[i].length(); j++)
+        {
+            d[i][j] = i + j;
+        }
     }
 
-    cout << endl;
+    for(ZYW_INT32 i = 0; i < d.length(); i++)
+    {
+        for(ZYW_INT32 j = 0; j < d[i].length(); j++)
+        {
+            cout << d[i][j] << " ";
+        }
 
-    try
-    {
-        slist.insert(6);
-    }
-    catch(const Exception& e)
-    {
-        cout << e.message() << endl;
-    }
-
-    for(slist.move(0); !slist.end(); slist.next())
-    {
-        cout << slist.current() << endl;
+        cout << endl;
     }
 
     return 0;

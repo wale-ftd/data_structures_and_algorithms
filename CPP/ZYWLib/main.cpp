@@ -1,39 +1,40 @@
 #include <iostream>
-#include "DynamicArray.h"
+#include "LinkList.h"
+#include "SmartPointer.h"
 
 USING_NAMESPACE(std);
 USING_NAMESPACE(ZYWLib);
 
+class Test
+{
+public:
+    Test()
+    {
+        cout << "Test()" << endl;
+    }
+
+    ~Test()
+    {
+        cout << "~Test()" << endl;
+    }
+};
+
 ZYW_INT32 main(ZYW_INT32 argc, ZYW_INT8** argv)
 {
-    DynamicArray< DynamicArray<ZYW_INT32> > d;
+#if 0
+    LinkList<ZYW_INT32> list;
 
-    d.resize(3);
+    for(int i = 0; i < 5; i++)
+        list.insert(i);
 
-    for(ZYW_INT32 i = 0; i < d.length(); i++)
-    {
-        //d[i].resize(3);
-        d[i].resize(i + 1);
-    }
+    for(list.move(0); !list.end(); list.next())
+        cout << list.current() << endl;
+#endif
 
+    SmartPointer<Test> t = new Test();
+    SmartPointer<Test> ts;
 
-    for(ZYW_INT32 i = 0; i < d.length(); i++)
-    {
-        for(ZYW_INT32 j = 0; j < d[i].length(); j++)
-        {
-            d[i][j] = i + j;
-        }
-    }
-
-    for(ZYW_INT32 i = 0; i < d.length(); i++)
-    {
-        for(ZYW_INT32 j = 0; j < d[i].length(); j++)
-        {
-            cout << d[i][j] << " ";
-        }
-
-        cout << endl;
-    }
+    ts = t;
 
     return 0;
 }

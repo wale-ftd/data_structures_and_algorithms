@@ -5,7 +5,7 @@
 #include "LinkList.h"
 
 
-NAMESPACE_DEF_START(ZYWLib)
+namespace ZYWLib {
 
 template <typename T>
 class GTreeNode: public TreeNode<T>
@@ -16,7 +16,7 @@ public:
 };
 
 
-NAMESPACE_DEF_END
+}
 
 
 #endif // GTREENODE_H

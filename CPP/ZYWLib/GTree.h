@@ -4,7 +4,7 @@
 #include "Tree.h"
 #include "GTreeNode.h"
 
-NAMESPACE_DEF_START(ZYWLib)
+namespace ZYWLib {
 
 template <typename T>
 class GTree: public Tree<T>
@@ -35,17 +35,20 @@ public:
     }
 
     /**
-     * 与Tree.h相比，将返回值类型修改成了GTreeNode，合法吗？
-     * 当然合法，因为赋值兼容性原则。
+     * 1. 与Tree.h相比，将返回值类型修改成了GTreeNode，合法吗？
+     *    当然合法，因为赋值兼容性原则。
+     * 2. const成员函数？
+     *    意味着当前函数不会修改对象的状态，即在当前函数里不会修改任何成员
+     *    变量的值。
      */
     GTreeNode<T>* find(const T& value) const
     {
-        return NULL;
+        return find(root(), value);
     }
 
     GTreeNode<T>* find(TreeNode<T> *node) const
     {
-        return NULL;
+        return find(root(), dynamic_cast<GTreeNode<T>*>(node));
     }
 
     GTreeNode<T>* root() const
@@ -77,9 +80,54 @@ public:
     {
         clear();
     }
+
+protected:
+    GTreeNode<T>* find(GTreeNode<T>* node, const T& value) const
+    {
+        GTreeNode<T>* ret = NULL;
+
+        if(node)
+        {
+            if(value == node->value)
+            {
+                ret = node;
+            }
+            else
+            {
+                for(node->child.move(0); (!node->child.end()) && (!ret); node->child.next())
+                {
+                    ret = find(node->child.current(), value);
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    GTreeNode<T>* find(GTreeNode<T>* node, GTreeNode<T>* obj) const
+    {
+        GTreeNode<T>* ret = NULL;
+
+        if(obj == node)
+        {
+            ret = node;
+        }
+        else
+        {
+            if(node)
+            {
+                for(node->child.move(0); (!node->child.end()) && (!ret); node->child.next())
+                {
+                    ret = find(node->child.current(), obj);
+                }
+            }
+        }
+
+        return ret;
+    }
 };
 
-NAMESPACE_DEF_END
+}
 
 
 

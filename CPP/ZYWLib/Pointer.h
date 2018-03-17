@@ -3,7 +3,7 @@
 
 #include "Object.h"
 
-NAMESPACE_DEF_START(ZYWLib)
+namespace ZYWLib {
 
 template<typename T>
 class Pointer: public Object
@@ -22,17 +22,27 @@ public:
         return m_pointer;
     }
 
+    const T * operator ->() const
+    {
+        return m_pointer;
+    }
+
     T& operator *()
     {
         return *m_pointer;
     }
 
-    ZYW_BOOL isNull()
+    const T& operator *() const
+    {
+        return *m_pointer;
+    }
+
+    ZYW_BOOL isNull() const
     {
         return (NULL == m_pointer);
     }
 
-    T * get()
+    T * get() const
     {
         return m_pointer;
     }
@@ -45,6 +55,6 @@ public:
      */
 };
 
-NAMESPACE_DEF_END
+}
 
 #endif // POINTER_H

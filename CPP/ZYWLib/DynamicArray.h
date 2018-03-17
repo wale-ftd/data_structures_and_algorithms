@@ -4,7 +4,7 @@
 #include "Standard.h"
 #include "Array.h"
 
-NAMESPACE_DEF_START(ZYWLib)
+namespace ZYWLib {
 
 template <typename T>
 class DynamicArray: public Array<T>
@@ -209,6 +209,6 @@ public:
     }
 };
 
-NAMESPACE_DEF_END
+}
 
 #endif // DYNAMICARRAY_H

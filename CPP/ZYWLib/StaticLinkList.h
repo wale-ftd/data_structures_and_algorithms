@@ -3,7 +3,7 @@
 
 #include "LinkList.h"
 
-NAMESPACE_DEF_START(ZYWLib)
+namespace ZYWLib {
 
 template <typename T, int N>
 class StaticLinkList: public LinkList<T>
@@ -99,6 +99,6 @@ protected:
     }
 };
 
-NAMESPACE_DEF_END
+}
 
 #endif // STATICLINKLIST_H

@@ -5,7 +5,7 @@
 #include "Object.h"
 #include "Exception.h"
 
-NAMESPACE_DEF_START(ZYWLib)
+namespace ZYWLib {
 
 template <typename T>
 class Array: public Object
@@ -58,6 +58,6 @@ public:
     virtual ZYW_INT32 length() const = 0;
 };
 
-NAMESPACE_DEF_END
+}
 
 #endif // ARRAY_H

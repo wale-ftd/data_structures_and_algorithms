@@ -4,9 +4,9 @@
 #ifdef __cplusplus
 typedef bool ZYW_BOOL;
 
-#define NAMESPACE_DEF_START(ns) namespace ns {
-#define NAMESPACE_DEF_END }
-#define USING_NAMESPACE(ns) using namespace ns
+//#define NAMESPACE_DEF_START(ns) namespace ns {
+//#define NAMESPACE_DEF_END }
+//#define USING_NAMESPACE(ns) using namespace ns
 
 #else
 typedef enum {

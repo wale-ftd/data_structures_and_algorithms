@@ -23,5 +23,7 @@ HEADERS += \
     Pointer.h \
     SharedPointer.h \
     Tree.h \
-    TreeNode.h
+    TreeNode.h \
+    GTreeNode.h \
+    GTree.h
 

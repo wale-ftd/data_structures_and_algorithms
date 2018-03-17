@@ -21,5 +21,7 @@ HEADERS += \
     LinkList.h \
     StaticLinkList.h \
     Pointer.h \
-    SharedPointer.h
+    SharedPointer.h \
+    Tree.h \
+    TreeNode.h
 

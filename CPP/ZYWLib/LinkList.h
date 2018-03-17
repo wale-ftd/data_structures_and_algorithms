@@ -3,9 +3,9 @@
 
 #include "List.h"
 #include "Exception.h"
-#include "SmartPointer.h"
+#include "SharedPointer.h"
 
-NAMESPACE_DEF_START(ZYWLib)
+namespace ZYWLib {
 
 template <typename T>
 class LinkList: public List<T>
@@ -14,7 +14,7 @@ protected:
     struct Node: public Object {
       T value;
       //Node *next;
-      SmartPointer<Node> next;
+      SharedPointer<Node> next;
     };
 
 #if 1
@@ -22,7 +22,7 @@ protected:
     mutable struct : public Object {
         ZYW_INT8 reserved[sizeof(T)];
         //Node *next;
-        SmartPointer<Node> next;
+        SharedPointer<Node> next;
     } m_header;
 #else
     /* 这样定义的头节点是用隐患的 */
@@ -30,7 +30,7 @@ protected:
 #endif
     ZYW_INT32 m_length; /* 可以将链表长度信息放入header.value里，这样就可以节省内存空间了。 */
     //Node *m_cursor;
-    SmartPointer<Node> m_cursor;
+    SharedPointer<Node> m_cursor;
     ZYW_INT32 m_cursor_step;
 
 public:
@@ -59,13 +59,13 @@ public:
         if(ret)
         {
             //Node *n_node = create();
-            SmartPointer<Node> n_node = create();
+            SharedPointer<Node> n_node = create();
             //if(n_node)
             if(!n_node.isNull())
             {
 #if 1
                 //Node *cur = position(i);
-                SmartPointer<Node> cur = position(i);
+                SharedPointer<Node> cur = position(i);
 
                 n_node->value = e;
                 n_node->next = cur->next;
@@ -112,10 +112,10 @@ public:
         if(ret)
         {
             //Node *cur = position(i);
-            SmartPointer<Node> cur = position(i);
+            SharedPointer<Node> cur = position(i);
 
             //Node *t_node = cur->next;
-            SmartPointer<Node> t_node = cur->next;
+            SharedPointer<Node> t_node = cur->next;
 
             if(m_cursor == t_node)
             {
@@ -179,7 +179,7 @@ public:
     {
         ZYW_INT32 ret = -1;
         //Node *cur = m_header.next;
-        SmartPointer<Node> cur = m_header.next;
+        SharedPointer<Node> cur = m_header.next;
 
         //for(ZYW_INT32 i = 0; cur; cur = cur->next, i++)
         for(ZYW_INT32 i = 0; !cur.isNull(); cur = cur->next, i++)
@@ -207,7 +207,7 @@ public:
         while(!m_header.next.isNull())
         {
             //Node *t_node = m_header.next;
-            SmartPointer<Node> t_node = m_header.next;
+            SharedPointer<Node> t_node = m_header.next;
 
             m_header.next = t_node->next;
 
@@ -281,14 +281,14 @@ public:
 protected:
     /* 定位到i的前一个。所以定位到第i个元素的使用方法是：position()->next */
     //Node *position(ZYW_INT32 i) const
-    SmartPointer<Node> position(ZYW_INT32 i) const
+    SharedPointer<Node> position(ZYW_INT32 i) const
     {
         /* 编译报错。在const成员函数里，不准修改任何成员变量的值。在这里
            对成员变量取地址，编译器会认为你可以会修改成员变量的值。
          * 解决方案：用mutable修改m_header成员变量。
          */
         //Node *ret = reinterpret_cast<Node *>(&m_header);
-        SmartPointer<Node> ret = reinterpret_cast<Node *>(&m_header);
+        SharedPointer<Node> ret = reinterpret_cast<Node *>(&m_header);
 
         for(ZYW_INT32 j = 0; j < i; ret = ret->next, j++) {}
 
@@ -309,6 +309,6 @@ protected:
     }
 };
 
-NAMESPACE_DEF_END
+}
 
 #endif // LINKLIST_H

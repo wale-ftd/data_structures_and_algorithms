@@ -26,7 +26,7 @@ public:
 
 ZYW_INT32 main(ZYW_INT32 argc, ZYW_INT8** argv)
 {
-#if 0
+#if 1
     LinkList<ZYW_INT32> list;
 
     for(int i = 0; i < 5; i++)
@@ -43,7 +43,7 @@ ZYW_INT32 main(ZYW_INT32 argc, ZYW_INT8** argv)
     ts = t;
 #endif
 
-#if 1
+#if 0
 #if 0
     SharedPointer<Test> sp = new Test();
     SharedPointer<Test> sps = sp;

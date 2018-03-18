@@ -4,7 +4,7 @@
 #include "TreeNode.h"
 #include "SharedPointer.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template <typename T>
 class Tree: public Object
@@ -18,8 +18,8 @@ public:
         m_root = NULL;
     }
 
-    virtual ZYW_BOOL insert(TreeNode<T> *node) = 0;
-    virtual ZYW_BOOL insert(const T& value, TreeNode<T> *parent) = 0;
+    virtual bool insert(TreeNode<T> *node) = 0;
+    virtual bool insert(const T& value, TreeNode<T> *parent) = 0;
     /**
      * 1. 两个>>之间要有空格隔开，否则，会被误认为是右移操作符，编译不过。
      * 2. 删除操作为什么要返回SharedPointer< Tree<T> >?
@@ -39,9 +39,9 @@ public:
     virtual TreeNode<T>* find(const T& value) const = 0;
     virtual TreeNode<T>* find(TreeNode<T> *node) const = 0;
     virtual TreeNode<T>* root() const = 0;
-    virtual ZYW_INT32 count() const = 0;
-    virtual ZYW_INT32 degree() const = 0;
-    virtual ZYW_INT32 height() const = 0;
+    virtual s32 count() const = 0;
+    virtual s32 degree() const = 0;
+    virtual s32 height() const = 0;
     virtual void clear() = 0;
 };
 

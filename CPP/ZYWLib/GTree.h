@@ -4,22 +4,22 @@
 #include "Tree.h"
 #include "GTreeNode.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template <typename T>
 class GTree: public Tree<T>
 {
 public:
-    ZYW_BOOL insert(TreeNode<T> *node)
+    bool insert(TreeNode<T> *node)
     {
-        ZYW_BOOL ret = true;
+        bool ret = true;
 
         return ret;
     }
 
-    ZYW_BOOL insert(const T& value, TreeNode<T> *parent)
+    bool insert(const T& value, TreeNode<T> *parent)
     {
-        ZYW_BOOL ret = true;
+        bool ret = true;
 
         return ret;
     }
@@ -56,17 +56,17 @@ public:
         return dynamic_cast<GTreeNode<T>*>(this->m_root);
     }
 
-    ZYW_INT32 count() const
+    s32 count() const
     {
         return 0;
     }
 
-    ZYW_INT32 degree() const
+    s32 degree() const
     {
         return 0;
     }
 
-    ZYW_INT32 height() const
+    s32 height() const
     {
         return 0;
     }

@@ -5,13 +5,13 @@
 #include <cstdlib>
 #include "Exception.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template<typename T>
 class SharedPointer: public Pointer<T>
 {
 private:
-    ZYW_INT32 *m_ref;
+    s32 *m_ref;
 
     void assign(const SharedPointer<T>& obj)
     {
@@ -29,7 +29,7 @@ public:
     {
         if(p)
         {
-            m_ref = static_cast<ZYW_INT32 *>(std::malloc(sizeof(ZYW_INT32)));
+            m_ref = static_cast<s32 *>(std::malloc(sizeof(s32)));
             if(m_ref)
             {
                 *m_ref = 1;
@@ -62,7 +62,7 @@ public:
 
     void clear()
     {
-        ZYW_INT32 *ref_tmp = m_ref;
+        s32 *ref_tmp = m_ref;
         T *pointer_tmp = this->m_pointer;
 
         m_ref = NULL;
@@ -91,13 +91,13 @@ public:
 };
 
 template <typename T>
-ZYW_BOOL operator ==(const SharedPointer<T>& l, const SharedPointer<T>& r)
+bool operator ==(const SharedPointer<T>& l, const SharedPointer<T>& r)
 {
     return (l.get() == r.get());
 }
 
 template <typename T>
-ZYW_BOOL operator !=(const SharedPointer<T>& l, const SharedPointer<T>& r)
+bool operator !=(const SharedPointer<T>& l, const SharedPointer<T>& r)
 {
     return (!(l==r));
 }

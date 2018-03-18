@@ -3,16 +3,16 @@
 
 #include "Standard.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 class Object {
 public:
-    void* operator new(ZYW_UINT32 size) throw();
+    void* operator new(u32 size) throw();
     void operator delete(void *p);
-    void* operator new[](ZYW_UINT32 size) throw();
+    void* operator new[](u32 size) throw();
     void operator delete[](void *p);
-    ZYW_BOOL operator ==(const Object& obj);
-    ZYW_BOOL operator !=(const Object& obj);
+    bool operator ==(const Object& obj);
+    bool operator !=(const Object& obj);
 
     virtual ~Object() = 0;
 };

@@ -5,7 +5,7 @@
 #include "Object.h"
 #include "Exception.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template <typename T>
 class Array: public Object
@@ -14,9 +14,9 @@ protected:
     T *m_array;
 
 public:
-    virtual ZYW_BOOL set(ZYW_INT32 i, const T& v)   /* O(1) */
+    virtual bool set(s32 i, const T& v)   /* O(1) */
     {
-        ZYW_BOOL ret = (0<=i) && (length()>i);
+        bool ret = (0<=i) && (length()>i);
         if(ret)
         {
             m_array[i] = v;
@@ -25,9 +25,9 @@ public:
         return ret;
     }
 
-    virtual ZYW_BOOL get(ZYW_INT32 i, T& v) const   /* O(1) */
+    virtual bool get(s32 i, T& v) const   /* O(1) */
     {
-        ZYW_BOOL ret = (0<=i) && (length()>i);
+        bool ret = (0<=i) && (length()>i);
         if(ret)
         {
             v = m_array[i];
@@ -37,9 +37,9 @@ public:
     }
 
     /* 重载数组访问操作符 */
-    T& operator [](ZYW_INT32 i) /* O(1) */
+    T& operator [](s32 i) /* O(1) */
     {
-        ZYW_BOOL ret = m_array && (0<=i) && (length()>i);
+        bool ret = m_array && (0<=i) && (length()>i);
         if(ret)
         {
             return m_array[i];
@@ -49,13 +49,13 @@ public:
             THROW_EXCEPTION(IndexOutOfBoundsException, "Parameter i is invalid ...");
         }
     }
-    T operator [](ZYW_INT32 i) const    /* O(1) */
+    T operator [](s32 i) const    /* O(1) */
     {
         /* 借助上面的[]实现 */
         return const_cast<Array<T>&>((*this))[i];
     }
 
-    virtual ZYW_INT32 length() const = 0;
+    virtual s32 length() const = 0;
 };
 
 }

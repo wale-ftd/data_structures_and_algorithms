@@ -4,7 +4,7 @@
 #include "Standard.h"
 #include "Array.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template <typename T, int N>
 class StaticArray: public Array<T>
@@ -23,7 +23,7 @@ public:
     {
         this->m_array = m_space;
 
-        for(ZYW_INT32 i = 0; N > i; i++)
+        for(s32 i = 0; N > i; i++)
         {
             m_space[i] = obj.m_space[i];
         }
@@ -32,7 +32,7 @@ public:
     {
         if(this != &obj)
         {
-            for(ZYW_INT32 i = 0; N > i; i++)
+            for(s32 i = 0; N > i; i++)
             {
                 m_space[i] = obj.m_space[i];
             }
@@ -41,7 +41,7 @@ public:
         return *this;
     }
 
-    ZYW_INT32 length() const    /* O(1) */
+    s32 length() const    /* O(1) */
     {
         return N;
     }

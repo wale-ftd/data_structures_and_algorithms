@@ -3,7 +3,7 @@
 
 #include "LinkList.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template <typename T, int N>
 class StaticLinkList: public LinkList<T>
@@ -19,7 +19,7 @@ protected:
 
     struct SNode: public Node
     {
-        void* operator new(ZYW_UINT32 size, void *loc)
+        void* operator new(u32 size, void *loc)
         {
             (void)size; /* 消除警告而已 */
 
@@ -27,19 +27,19 @@ protected:
         }
     };
 
-    ZYW_UINT8 m_space[N * sizeof(SNode)];
-    ZYW_BOOL m_used[N];
+    u8 m_space[N * sizeof(SNode)];
+    bool m_used[N];
 
 public:
     StaticLinkList()
     {
-        for(ZYW_INT32 i = 0; i < N; i++)
+        for(s32 i = 0; i < N; i++)
         {
             m_used[i] = false;
         }
     }
 
-    ZYW_INT32 capacity()
+    s32 capacity()
     {
         return N;
     }
@@ -54,7 +54,7 @@ protected:
     {
         SNode *ret = NULL;
 
-        for(ZYW_INT32 i = 0; i < N; i++)
+        for(s32 i = 0; i < N; i++)
         {
             if(!m_used[i])
             {
@@ -85,7 +85,7 @@ protected:
         SNode *space = reinterpret_cast<SNode *>(m_space);
         SNode *psn = dynamic_cast<SNode *>(pn);
 
-        for(ZYW_INT32 i = 0; i < N; i++)
+        for(s32 i = 0; i < N; i++)
         {
             if((space+i) == psn)
             {

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-namespace ZYWLib
+namespace DSaALib
 {
 
 void Exception::init(const char* message, const char* file, int line)

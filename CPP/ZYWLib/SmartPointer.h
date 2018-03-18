@@ -3,7 +3,7 @@
 
 #include "Pointer.h"
 
-namespace ZYWLib
+namespace DSaALib
 {
 template <typename T>
 class SmartPointer: public Pointer<T>

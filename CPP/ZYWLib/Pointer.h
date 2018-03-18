@@ -3,7 +3,7 @@
 
 #include "Object.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template<typename T>
 class Pointer: public Object
@@ -37,7 +37,7 @@ public:
         return *m_pointer;
     }
 
-    ZYW_BOOL isNull() const
+    bool isNull() const
     {
         return (NULL == m_pointer);
     }

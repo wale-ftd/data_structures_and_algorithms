@@ -3,7 +3,7 @@
 
 #include "Object.h"
 
-namespace ZYWLib
+namespace DSaALib
 {
 
 #define THROW_EXCEPTION(e, m) (throw e(m, __FILE__, __LINE__))

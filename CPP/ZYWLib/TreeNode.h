@@ -3,7 +3,7 @@
 
 #include "Object.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template <typename T>
 class TreeNode: public Object

@@ -5,7 +5,7 @@
 #include "LinkList.h"
 
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template <typename T>
 class GTreeNode: public TreeNode<T>

@@ -3,17 +3,17 @@
 
 #include "SeqList.h"
 
-namespace ZYWLib
+namespace DSaALib
 {
 
 template <typename T>
 class DynamicList: public SeqList<T>
 {
 protected:
-    ZYW_INT32 m_capacity; /* 顺序存储空间的大小 */
+    s32 m_capacity; /* 顺序存储空间的大小 */
 
 public:
-    DynamicList(ZYW_INT32 capacity)   /* 申请空间 */
+    DynamicList(s32 capacity)   /* 申请空间 */
     {
         if(0 < capacity)
         {
@@ -34,22 +34,22 @@ public:
         }
     }
 
-    ZYW_INT32 capacity() const
+    s32 capacity() const
     {
         return m_capacity;
     }
 
     /* 重新设置顺序存储空间的大小 */
-    void resize(ZYW_INT32 capacity)
+    void resize(s32 capacity)
     {
         if(m_capacity != capacity)
         {
             T* array = new T[capacity];
             if(array)
             {
-                ZYW_INT32 len = (this->m_length<=capacity) ? this->m_length : capacity;
+                s32 len = (this->m_length<=capacity) ? this->m_length : capacity;
 
-                for(ZYW_INT32 i = 0; i < len; i++)
+                for(s32 i = 0; i < len; i++)
                 {
                     /**
                      *  1. 如果在array[i] = this->m_array[i]时触发异常(会立刻返回)，也不影响

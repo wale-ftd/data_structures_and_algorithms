@@ -3,7 +3,7 @@
 
 #include "Object.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template <typename T>
 class List: public Object 
@@ -14,13 +14,13 @@ protected:
 
 public:
     List() {}
-    virtual ZYW_BOOL insert(ZYW_INT32 i, const T& e) = 0;
-    virtual ZYW_BOOL insert(const T& e) = 0;    /* Î²²å */
-    virtual ZYW_BOOL remove(ZYW_INT32 i) = 0;
-    virtual ZYW_BOOL set(ZYW_INT32 i, const T& e) = 0;
-    virtual ZYW_BOOL get(ZYW_INT32 i, T& e) const = 0;
-    virtual ZYW_INT32 find(const T& e) const = 0;
-    virtual ZYW_INT32 length() const = 0;
+    virtual bool insert(s32 i, const T& e) = 0;
+    virtual bool insert(const T& e) = 0;    /* Î²²å */
+    virtual bool remove(s32 i) = 0;
+    virtual bool set(s32 i, const T& e) = 0;
+    virtual bool get(s32 i, T& e) const = 0;
+    virtual s32 find(const T& e) const = 0;
+    virtual s32 length() const = 0;
     virtual void clear() = 0;
 };
 

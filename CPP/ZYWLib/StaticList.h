@@ -3,10 +3,10 @@
 
 #include "SeqList.h"
 
-namespace ZYWLib
+namespace DSaALib
 {
 
-template <typename T, ZYW_INT32 N>
+template <typename T, s32 N>
 class StaticList: public SeqList<T>
 {
 protected:
@@ -18,7 +18,7 @@ public:
         this->m_array = m_space;    /* 为什么m_array = m_space会编译报错呢？ */
         this->m_length = 0;         /* 为什么m_length = 0会编译报错呢？ */
     }
-    ZYW_INT32 capacity() const
+    s32 capacity() const
     {
         return N;
     }

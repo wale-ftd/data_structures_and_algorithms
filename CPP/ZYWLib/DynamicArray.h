@@ -4,15 +4,15 @@
 #include "Standard.h"
 #include "Array.h"
 
-namespace ZYWLib {
+namespace DSaALib {
 
 template <typename T>
 class DynamicArray: public Array<T>
 {
 protected:
-    ZYW_INT32 m_length;
+    s32 m_length;
 
-    T* copy(T *array, ZYW_INT32 a_len, ZYW_INT32 new_len)   // O(min(a_len, new_len)) ==> O(n)
+    T* copy(T *array, s32 a_len, s32 new_len)   // O(min(a_len, new_len)) ==> O(n)
     {
         T *ret = NULL;
 
@@ -21,9 +21,9 @@ protected:
             T *na = new T[new_len];
             if(na)
             {
-                ZYW_INT32 len = (a_len<new_len) ? a_len : new_len;
+                s32 len = (a_len<new_len) ? a_len : new_len;
 
-                for(ZYW_INT32 i = 0; i < len; i++)
+                for(s32 i = 0; i < len; i++)
                 {
                     na[i] = array[i];
                 }
@@ -43,7 +43,7 @@ protected:
         return ret;
     }
 
-    void update(T *array, ZYW_INT32 a_len)  // O(1)
+    void update(T *array, s32 a_len)  // O(1)
     {
         if(array && (0<a_len))
         {
@@ -63,7 +63,7 @@ protected:
         }
     }
 
-    void init(T *array, ZYW_INT32 a_len)    // O(1)
+    void init(T *array, s32 a_len)    // O(1)
     {
         if(array && (0<a_len))
         {
@@ -77,7 +77,7 @@ protected:
     }
 
 public:
-    DynamicArray(ZYW_INT32 length = 1)  // O(1)
+    DynamicArray(s32 length = 1)  // O(1)
     {
         if(0 < length)
         {
@@ -111,7 +111,7 @@ public:
         {
             m_length = obj.length();
 
-            for(ZYW_INT32 i = 0; i < m_length; i++)
+            for(s32 i = 0; i < m_length; i++)
             {
                 this->m_array[i] = obj.m_array[i];
             }
@@ -133,7 +133,7 @@ public:
             T *da = new T[obj.length()];
             if(da)
             {
-                for(ZYW_INT32 i = 0; i < obj.length(); i++)
+                for(s32 i = 0; i < obj.length(); i++)
                 {
                     da[i] = obj.m_array[i];
                 }
@@ -158,7 +158,7 @@ public:
         return *this;
     }
 
-    void resize(ZYW_INT32 length)   /* 动态重置数组的长度 */ // O(n)
+    void resize(s32 length)   /* 动态重置数组的长度 */ // O(n)
     {
         if(length != m_length)
         {
@@ -168,9 +168,9 @@ public:
             T *da = new T[length];
             if(da)
             {
-                ZYW_INT32 len = (m_length<=length) ? m_length : length;
+                s32 len = (m_length<=length) ? m_length : length;
 
-                for(ZYW_INT32 i = 0; i < len; i++)
+                for(s32 i = 0; i < len; i++)
                 {
                     da[i] = this->m_array[i];
                 }
@@ -193,7 +193,7 @@ public:
         }
     }
 
-    ZYW_INT32 length() const    /* O(1) */
+    s32 length() const    /* O(1) */
     {
         return m_length;
     }

@@ -17,6 +17,7 @@ public:
      */
     TreeNode<T> *parent;
 
+public:
     TreeNode()
     {
         parent = NULL;

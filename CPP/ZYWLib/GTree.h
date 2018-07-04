@@ -3,6 +3,7 @@
 
 #include "Tree.h"
 #include "GTreeNode.h"
+#include "LinkQueue.h"
 
 //#define TO_TEST
 #ifdef TO_TEST
@@ -15,7 +16,14 @@ namespace DSaALib {
 template <typename T>
 class GTree: public Tree<T>
 {
+protected:
+    LinkQueue<GTreeNode<T>*> m_queue;
+
 public:
+    GTree()
+    {
+    }
+
     bool insert(TreeNode<T> *node)
     {
         bool ret = true;
@@ -88,6 +96,8 @@ public:
         if(node)
         {
             remove(node, ret);
+
+            m_queue.clear();
         }
         else
         {
@@ -105,6 +115,8 @@ public:
         if(obj_node)
         {
             remove(obj_node, ret);
+
+            m_queue.clear();
         }
         else
         {
@@ -157,6 +169,58 @@ public:
         free(root());
 
         this->m_root = NULL;
+
+        m_queue.clear();
+    }
+
+    bool begin()
+    {
+        bool ret = (root() != NULL);
+
+        if(ret)
+        {
+            m_queue.clear();
+
+            m_queue.add(root());
+        }
+
+        return ret;
+    }
+
+    bool end()
+    {
+        return (0 == m_queue.length());
+    }
+
+    bool next()
+    {
+        bool ret = (0 < m_queue.length());
+        if(ret)
+        {
+            GTreeNode<T> *node = m_queue.front();
+
+            m_queue.remove();
+
+            for(node->child.move(0); !node->child.end(); node->child.next())
+            {
+                m_queue.add(node->child.current());
+            }
+        }
+
+        return ret;
+    }
+
+    T current()
+    {
+        /* current()函数只有在遍历过程中才有意义 */
+        if(!end())
+        {
+            return m_queue.front()->value;
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "No value at current position ...");
+        }
     }
 
     ~GTree()
@@ -165,6 +229,10 @@ public:
     }
 
 protected:
+    /* 通用树对象是不能被赋值的 */
+    GTree(const GTree<T> &);
+    GTree<T>& operator =(const GTree<T> &);
+
     GTreeNode<T>* find(GTreeNode<T>* node, const T& value) const
     {
         GTreeNode<T>* ret = NULL;

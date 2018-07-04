@@ -25,5 +25,8 @@ HEADERS += \
     Tree.h \
     TreeNode.h \
     GTreeNode.h \
-    GTree.h
+    GTree.h \
+    Queue.h \
+    LinkQueue.h \
+    LinuxList.h 
 

@@ -38,6 +38,10 @@ public:
     }
 
 protected:
+    /* 通用树结点对象是不能被赋值的 */
+    GTreeNode(const GTreeNode<T> &);
+    GTreeNode<T>& operator =(const GTreeNode<T> &);
+
     void* operator new(u32 size) throw()
     {
         return Object::operator new(size);

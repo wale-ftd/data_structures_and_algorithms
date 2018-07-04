@@ -10,8 +10,8 @@
 
 #else
 typedef enum {
-    FALSE = 0,
-    TRUE
+    false = 0,
+    true
 } bool;
 #endif
 

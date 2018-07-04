@@ -52,6 +52,11 @@ s32 main(s32 argc, s8** argv)
 
     cout << t.degree() << endl;
 
+    for(t.begin(); !t.end(); t.next())
+    {
+        cout << t.current() << endl;
+    }
+
     return 0;
 }
 

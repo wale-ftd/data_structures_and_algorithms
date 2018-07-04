@@ -10,8 +10,17 @@ s32 main(s32 argc, s8** argv)
 {
     GTree<s8> t;
     GTreeNode<s8> *node = NULL;
+    GTreeNode<s8> root;
 
-    t.insert('A', NULL);
+    root.value = 'A';
+    root.parent = NULL;
+
+    /**
+     * root改成在栈上，在clear函数里delete root结点，程序跑
+     * 起来也没问题，为什么呢？因为这个main函数太简单的，问题没
+     * 来得及暴露出来。
+     */
+    t.insert(&root);
 
     node = t.find('A');
     t.insert('B', node);
@@ -37,7 +46,9 @@ s32 main(s32 argc, s8** argv)
     node = t.find('H');
     t.insert('M', node);
 
-    s8 *s = "KLFGMIJ";
+    t.clear();
+
+    const s8 *s = "KLFGMIJ";
 
     for(u32 i = 0; i < strlen(s); i++)
     {

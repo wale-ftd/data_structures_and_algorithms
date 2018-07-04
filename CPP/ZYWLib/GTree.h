@@ -4,6 +4,12 @@
 #include "Tree.h"
 #include "GTreeNode.h"
 
+//#define TO_TEST
+#ifdef TO_TEST
+#include <iostream>
+using namespace std;
+#endif
+
 namespace DSaALib {
 
 template <typename T>
@@ -57,7 +63,7 @@ public:
     bool insert(const T& value, TreeNode<T> *parent)
     {
         bool ret = true;
-        GTreeNode<T> *p_n = new GTreeNode<T>();
+        GTreeNode<T> *p_n = GTreeNode<T>::NewNode();
 
         if(p_n)
         {
@@ -121,8 +127,11 @@ public:
         return 0;
     }
 
+    /* 将树中的所有结点清除(释放堆中的结点) */
     void clear()
     {
+        free(root());
+
         this->m_root = NULL;
     }
 
@@ -174,6 +183,24 @@ protected:
         }
 
         return ret;
+    }
+
+    void free(GTreeNode<T> *node)
+    {
+        if(node)
+        {
+            for(node->child.move(0); !node->child.end(); node->child.next())
+            {
+                free(node->child.current());
+            }
+
+            if(node->flag())
+                delete node;
+#ifdef TO_TEST
+            else
+                cout << node->value << endl;
+#endif
+        }
     }
 };
 

@@ -82,12 +82,36 @@ public:
 
     SharedPointer< Tree<T> > remove(const T& value)
     {
-        return NULL;
+        GTree<T> *ret = NULL;
+
+        GTreeNode<T> *node = find(value);
+        if(node)
+        {
+            remove(node, ret);
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidParameterException, "Can not find the node via parameter value ...");
+        }
+
+        return ret;
     }
 
     SharedPointer< Tree<T> > remove(TreeNode<T> *node)
     {
-        return NULL;
+        GTree<T> *ret = NULL;
+
+        GTreeNode<T> *obj_node = find(node);
+        if(obj_node)
+        {
+            remove(obj_node, ret);
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidParameterException, "Parameter node is invalid ...");
+        }
+
+        return ret;
     }
 
     /**
@@ -200,6 +224,32 @@ protected:
             else
                 cout << node->value << endl;
 #endif
+        }
+    }
+
+    void remove(GTreeNode<T> *node, GTree<T> *&ret)
+    {
+        ret = new GTree<T>();
+        if(ret)
+        {
+            if(node != root())
+            {
+                LinkList<GTreeNode<T>*>& child = dynamic_cast<GTreeNode<T>*>(node->parent)->child;
+
+                child.remove(child.find(node));
+
+                node->parent = NULL;
+            }
+            else
+            {
+                this->m_root = NULL;
+            }
+
+            ret->m_root = node;
+        }
+        else
+        {
+            THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create new tree ...");
         }
     }
 };

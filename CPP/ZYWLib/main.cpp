@@ -1,6 +1,7 @@
 #include <iostream>
 #include "GTree.h"
 #include <string.h>
+#include "BTree.h"
 
 
 using namespace std;
@@ -56,6 +57,9 @@ s32 main(s32 argc, s8** argv)
     {
         cout << t.current() << endl;
     }
+
+    BTree<s32> bt;
+    BTreeNode<s32> btn;
 
     return 0;
 }

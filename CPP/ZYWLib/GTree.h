@@ -229,10 +229,6 @@ public:
     }
 
 protected:
-    /* 通用树对象是不能被赋值的 */
-    GTree(const GTree<T> &);
-    GTree<T>& operator =(const GTree<T> &);
-
     GTreeNode<T>* find(GTreeNode<T>* node, const T& value) const
     {
         GTreeNode<T>* ret = NULL;

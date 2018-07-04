@@ -42,7 +42,13 @@ public:
     virtual s32 count() const = 0;
     virtual s32 degree() const = 0;
     virtual s32 height() const = 0;
+    /* 将树中的所有结点清除 */
     virtual void clear() = 0;
+
+protected:
+    /* 树对象是不能被赋值的 */
+    Tree(const Tree<T> &);
+    Tree<T>& operator =(const Tree<T> &);
 };
 
 }

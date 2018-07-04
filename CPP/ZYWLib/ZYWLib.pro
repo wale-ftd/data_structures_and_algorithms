@@ -28,5 +28,7 @@ HEADERS += \
     GTree.h \
     Queue.h \
     LinkQueue.h \
-    LinuxList.h 
+    LinuxList.h \
+    BTree.h \
+    BTreeNode.h
 

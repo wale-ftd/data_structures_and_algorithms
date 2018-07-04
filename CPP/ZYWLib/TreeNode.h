@@ -17,13 +17,32 @@ public:
      */
     TreeNode<T> *parent;
 
+protected:
+    bool m_flag;
+
 public:
     TreeNode()
     {
         parent = NULL;
+        m_flag = false;
+    }
+
+    bool flag()
+    {
+        return m_flag;
     }
 
     virtual ~TreeNode() = 0;    /* 表明TreeNode类是一个抽象类 */
+
+protected:
+    /* 通用树结点对象是不能被赋值的 */
+    TreeNode(const TreeNode<T> &);
+    TreeNode<T>& operator =(const TreeNode<T> &);
+
+    void* operator new(u32 size) throw()
+    {
+        return Object::operator new(size);
+    }
 };
 
 /* 虽然析构函数已经是一个纯虚函数了，但还是要给它提供一个空的函数体，否则，可能会编译不过。 */

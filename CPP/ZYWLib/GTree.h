@@ -138,17 +138,17 @@ public:
 
     s32 count() const
     {
-        return 0;
+        return count(root());
     }
 
     s32 degree() const
     {
-        return 0;
+        return degree(root());
     }
 
     s32 height() const
     {
-        return 0;
+        return height(root());
     }
 
     /* 将树中的所有结点清除(释放堆中的结点) */
@@ -251,6 +251,67 @@ protected:
         {
             THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create new tree ...");
         }
+    }
+
+    s32 count(GTreeNode<T> *node) const
+    {
+        s32 ret = 0;
+
+        if(node)
+        {
+            ret = 1;
+
+            for(node->child.move(0); !node->child.end(); node->child.next())
+            {
+                ret += count(node->child.current());
+            }
+        }
+
+        return ret;
+    }
+
+    s32 height(GTreeNode<T> *node) const
+    {
+        s32 ret = 0;
+
+        if(node)
+        {
+            for(node->child.move(0); !node->child.end(); node->child.next())
+            {
+                s32 ch = height(node->child.current());
+
+                if(ch > ret)
+                {
+                    ret = ch;
+                }
+            }
+
+            ret += 1;
+        }
+
+        return ret;
+    }
+
+    s32 degree(GTreeNode<T> *node) const
+    {
+        s32 ret = 0;
+
+        if(node)
+        {
+            ret = node->child.length();
+
+            for(node->child.move(0); !node->child.end(); node->child.next())
+            {
+                s32 cd = degree(node->child.current());
+
+                if(cd > ret)
+                {
+                    ret = cd;
+                }
+            }
+        }
+
+        return ret;
     }
 };
 

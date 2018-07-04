@@ -46,26 +46,11 @@ s32 main(s32 argc, s8** argv)
     node = t.find('H');
     t.insert('M', node);
 
-    //t.clear();
-    //t.remove('D');
-    SharedPointer< Tree<s8> > sp = t.remove(t.find('D'));
+    cout << t.count() << endl;
 
-    const s8 *s = "KLFGMIJ";
+    cout << t.height() << endl;
 
-    for(u32 i = 0; i < strlen(s); i++)
-    {
-        //TreeNode<s8> *node = t.find(s[i]);
-        TreeNode<s8> *node = sp->find(s[i]);
-
-        while(node)
-        {
-            cout << node->value << " ";
-
-            node = node->parent;
-        }
-
-        cout << endl;
-    }
+    cout << t.degree() << endl;
 
     return 0;
 }

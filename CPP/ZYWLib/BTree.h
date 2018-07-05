@@ -34,17 +34,15 @@ public:
 
     TreeNode<T>* find(const T& value) const
     {
-        return NULL;
-
+        return find(root(), value);
     }
 
     TreeNode<T>* find(TreeNode<T> *node) const
     {
-        return NULL;
-
+        return find(root(), dynamic_cast<BTreeNode<T>*>(node));
     }
 
-    TreeNode<T>* root() const
+    BTreeNode<T>* root() const
     {
         return dynamic_cast<BTreeNode<T>*>(this->m_root);
     }
@@ -73,6 +71,61 @@ public:
     ~BTree()
     {
         clear();
+    }
+
+protected:
+    /* virtual */ BTreeNode<T>* find(BTreeNode<T>* node, const T& value) const
+    {
+        BTreeNode<T>* ret = NULL;
+
+        if(node)
+        {
+            if(value == node->value)
+            {
+                ret = node;
+            }
+            else
+            {
+                if(!ret)
+                {
+                    ret = find(node->left, value);
+                }
+
+                if(!ret)
+                {
+                    ret = find(node->right, value);
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    /* virtual */ BTreeNode<T>* find(BTreeNode<T>* node, BTreeNode<T> *obj) const
+    {
+        BTreeNode<T>* ret = NULL;
+
+        if(node)
+        {
+            if(obj == node)
+            {
+                ret = node;
+            }
+            else
+            {
+                if(!ret)
+                {
+                    ret = find(node->left, obj);
+                }
+
+                if(!ret)
+                {
+                    ret = find(node->right, obj);
+                }
+            }
+        }
+
+        return ret;
     }
 };
 

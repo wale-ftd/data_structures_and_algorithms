@@ -5,6 +5,7 @@
 #include "BTreeNode.h"
 #include "LinkQueue.h"
 
+
 namespace DSaALib {
 
 template <typename T>
@@ -13,12 +14,70 @@ class BTree: public Tree<T>
 public:
     bool insert(TreeNode<T> *node)
     {
-        return true;
+        return insert(node, BTNP_ANY);
+    }
+
+    /* virtual */ bool insert(TreeNode<T> *node, BT_NODE_POS pos)
+    {
+        bool ret = false;
+
+        if(node)
+        {
+            if(this->m_root)
+            {
+                BTreeNode<T> *np = dynamic_cast<BTreeNode<T>*>(find(node->parent));
+
+                if(np)
+                {
+                    ret = insert(dynamic_cast<BTreeNode<T>*>(node), np, pos);
+                }
+                else
+                {
+                    THROW_EXCEPTION(InvalidParameterException, "Invalid parent tree node ...");
+                }
+            }
+            else
+            {
+                node->parent = NULL;
+                this->m_root = node;
+                ret = true;
+            }
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidParameterException, "Parameter node cannot be NULL ...");
+        }
+
+        return ret;
     }
 
     bool insert(const T& value, TreeNode<T> *parent)
     {
-        return true;
+        return insert(value, parent, BTNP_ANY);
+    }
+
+    /* virtual */ bool insert(const T& value, TreeNode<T> *parent, BT_NODE_POS pos)
+    {
+        bool ret = false;
+        BTreeNode<T> *nn = BTreeNode<T>::NewNode();
+
+        if(nn)
+        {
+            nn->value = value;
+            nn->parent = parent;
+
+            ret = insert(nn, pos);
+            if(!ret)
+            {
+                delete nn;
+            }
+        }
+        else
+        {
+            THROW_EXCEPTION(NoEnoughMemoryException, "no memory to create new btree node ...");
+        }
+
+        return ret;
     }
 
     SharedPointer< Tree<T> > remove(const T& value)
@@ -32,12 +91,12 @@ public:
 
     }
 
-    TreeNode<T>* find(const T& value) const
+    BTreeNode<T>* find(const T& value) const
     {
         return find(root(), value);
     }
 
-    TreeNode<T>* find(TreeNode<T> *node) const
+    BTreeNode<T>* find(TreeNode<T> *node) const
     {
         return find(root(), dynamic_cast<BTreeNode<T>*>(node));
     }
@@ -122,6 +181,66 @@ protected:
                 {
                     ret = find(node->right, obj);
                 }
+            }
+        }
+
+        return ret;
+    }
+
+    /* virtual */ bool insert(BTreeNode<T> *n, BTreeNode<T> *np, BT_NODE_POS pos)
+    {
+        bool ret = true;
+
+        switch(pos)
+        {
+            case BTNP_ANY:
+            {
+                if(!np->left)
+                {
+                    np->left = n;
+                }
+                else if(!np->right)
+                {
+                    np->right = n;
+                }
+                else
+                {
+                    ret = false;
+                }
+
+                break;
+            }
+            case BTNP_LEFT:
+            {
+                if(!np->left)
+                {
+                    np->left = n;
+                }
+                else
+                {
+                    ret = false;
+                }
+
+                break;
+            }
+            case BTNP_RIGHT:
+            {
+                if(!np->right)
+                {
+                    np->right = n;
+                }
+                else
+                {
+                    ret = false;
+                }
+
+                break;
+            }
+            default:
+            {
+                ret = false;
+
+                break;
             }
         }
 

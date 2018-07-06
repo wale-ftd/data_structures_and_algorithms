@@ -5,6 +5,12 @@
 
 namespace DSaALib {
 
+enum BT_NODE_POS {
+    BTNP_ANY,
+    BTNP_LEFT,
+    BTNP_RIGHT
+};
+
 template<typename T>
 class BTreeNode: public TreeNode<T>
 {

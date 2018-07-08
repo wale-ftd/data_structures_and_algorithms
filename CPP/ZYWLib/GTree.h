@@ -5,6 +5,7 @@
 #include "GTreeNode.h"
 #include "LinkQueue.h"
 
+#undef TO_TEST
 //#define TO_TEST
 #ifdef TO_TEST
 #include <iostream>

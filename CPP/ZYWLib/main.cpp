@@ -51,6 +51,42 @@ s32 main(s32 argc, s8** argv)
         cout << endl;
     }
 
+    cout << endl;
+
+    SharedPointer< Tree<s32> > sp = bt.remove(3);
+
+    for(u32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
+    {
+        TreeNode<s32> *node = bt.find(a[i]);
+
+        while(node)
+        {
+            cout << node->value << " ";
+
+            node = node->parent;
+        }
+
+        cout << endl;
+    }
+
+    cout << endl;
+
+    for(u32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
+    {
+        TreeNode<s32> *node = sp->find(a[i]);
+
+        while(node)
+        {
+            cout << node->value << " ";
+
+            node = node->parent;
+        }
+
+        cout << endl;
+    }
+
+    cout << endl;
+
     return 0;
 }
 

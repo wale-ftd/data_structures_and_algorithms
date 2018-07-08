@@ -5,6 +5,11 @@
 #include "BTreeNode.h"
 #include "LinkQueue.h"
 
+#undef TO_TEST
+//#define TO_TEST
+#ifdef TO_TEST
+#include <iostream>
+#endif
 
 namespace DSaALib {
 
@@ -82,13 +87,36 @@ public:
 
     SharedPointer< Tree<T> > remove(const T& value)
     {
-        return NULL;
+        BTree<T> *ret = NULL;
+
+        BTreeNode<T> *node = find(value);
+        if(node)
+        {
+            remove(node, ret);
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidParameterException, "Can not find the node via parameter value ...");
+        }
+
+        return ret;
     }
 
     SharedPointer< Tree<T> > remove(TreeNode<T> *node)
     {
-        return NULL;
+        BTree<T> *ret = NULL;
 
+        BTreeNode<T> *obj_node = find(node);
+        if(obj_node)
+        {
+            remove(obj_node, ret);
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidParameterException, "Parameter node is invalid ...");
+        }
+
+        return ret;
     }
 
     BTreeNode<T>* find(const T& value) const
@@ -124,6 +152,8 @@ public:
     /* 将树中的所有结点清除 */
     void clear()
     {
+        free(root());
+
         this->m_root = NULL;
     }
 
@@ -245,6 +275,57 @@ protected:
         }
 
         return ret;
+    }
+
+    /* virtual */ void remove(BTreeNode<T> *node, BTree<T> *&ret)
+    {
+        ret = new BTree<T>();
+        if(ret)
+        {
+            if(node != root())
+            {
+                BTreeNode<T> *parent = dynamic_cast<BTreeNode<T>*>(node->parent);
+
+                if(node == parent->left)
+                {
+                    parent->left = NULL;
+                }
+                else if(node == parent->right)
+                {
+                    parent->right = NULL;
+                }
+
+                node->parent = NULL;
+            }
+            else
+            {
+                this->m_root = NULL;
+            }
+
+            ret->m_root = node;
+        }
+        else
+        {
+            THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create new tree ...");
+        }
+    }
+
+    /* virtual */ void free(BTreeNode<T> *node)
+    {
+        if(node)
+        {
+            free(node->left);
+
+            free(node->right);
+
+#ifdef TO_TEST
+            std::cout << node->value << std::endl;
+#endif
+            if(node->flag())
+            {
+                delete node;
+            }
+        }
     }
 };
 

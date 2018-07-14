@@ -169,9 +169,9 @@ public:
     {
         free(root());
 
-        this->m_root = NULL;
-
         m_queue.clear();
+
+        this->m_root = NULL;
     }
 
     bool begin()

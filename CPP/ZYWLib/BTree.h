@@ -16,6 +16,9 @@ namespace DSaALib {
 template <typename T>
 class BTree: public Tree<T>
 {
+protected:
+    LinkQueue<BTreeNode<T>*> m_queue;
+
 public:
     bool insert(TreeNode<T> *node)
     {
@@ -93,6 +96,8 @@ public:
         if(node)
         {
             remove(node, ret);
+
+            m_queue.clear();
         }
         else
         {
@@ -110,6 +115,8 @@ public:
         if(obj_node)
         {
             remove(obj_node, ret);
+
+            m_queue.clear();
         }
         else
         {
@@ -154,7 +161,64 @@ public:
     {
         free(root());
 
+        m_queue.clear();
+
         this->m_root = NULL;
+    }
+
+    bool begin()
+    {
+        bool ret = (root() != NULL);
+
+        if(ret)
+        {
+            m_queue.clear();
+
+            m_queue.add(root());
+        }
+
+        return ret;
+    }
+
+    bool end()
+    {
+        return (0 == m_queue.length());
+    }
+
+    bool next()
+    {
+        bool ret = (0 < m_queue.length());
+        if(ret)
+        {
+            BTreeNode<T> *node = m_queue.front();
+
+            m_queue.remove();
+
+            if(node->left)
+            {
+                m_queue.add(node->left);
+            }
+
+            if(node->right)
+            {
+                m_queue.add(node->right);
+            }
+        }
+
+        return ret;
+    }
+
+    T current()
+    {
+        /* current()函数只有在遍历过程中才有意义 */
+        if(!end())
+        {
+            return m_queue.front()->value;
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "No value at current position ...");
+        }
     }
 
     ~BTree()

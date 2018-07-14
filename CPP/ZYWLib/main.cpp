@@ -32,9 +32,18 @@ s32 main(s32 argc, s8** argv)
     bt.insert(6, pbtn);
     bt.insert(7, pbtn);
 
+    cout << "----------------------------------" << endl;
     cout << "count  = " << bt.count() << endl;
     cout << "degree = " << bt.degree() << endl;
     cout << "height = " << bt.height() << endl;
+    cout << endl;
+
+    cout << "----------------------------------" << endl;
+    for(bt.begin(); !bt.end(); bt.next())
+    {
+        cout << bt.current() << " ";
+    }
+    cout << endl;
 
     cout << endl;
 
@@ -43,6 +52,7 @@ s32 main(s32 argc, s8** argv)
 
     s32 a[] = {8, 9, 10, 11, 7};
 
+    cout << "----------------------------------" << endl;
     for(u32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
     {
         TreeNode<s32> *node = bt.find(a[i]);
@@ -61,6 +71,7 @@ s32 main(s32 argc, s8** argv)
 
     SharedPointer< Tree<s32> > sp = bt.remove(3);
 
+    cout << "----------------------------------" << endl;
     for(u32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
     {
         TreeNode<s32> *node = bt.find(a[i]);
@@ -75,8 +86,7 @@ s32 main(s32 argc, s8** argv)
         cout << endl;
     }
 
-    cout << endl;
-
+    cout << "----------------------------------" << endl;
     for(u32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
     {
         TreeNode<s32> *node = sp->find(a[i]);
@@ -90,8 +100,6 @@ s32 main(s32 argc, s8** argv)
 
         cout << endl;
     }
-
-    cout << endl;
 
     return 0;
 }

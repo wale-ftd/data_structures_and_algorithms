@@ -48,6 +48,19 @@ public:
     /* 将树中的所有结点清除 */
     virtual void clear() = 0;
 
+    /*
+     * 层次遍历树所用到的四个函数。
+     * eg: for(t.begin(); !t.end(); t.next)
+     *     {
+     *         cout << t.current() << " ";
+     *     }
+     *     cout << endl;
+     */
+    virtual bool begin() = 0;
+    virtual bool end()   = 0;
+    virtual bool next()  = 0;
+    virtual T current()  = 0;
+
 protected:
     /* 树对象是不能被赋值的 */
     Tree(const Tree<T> &);

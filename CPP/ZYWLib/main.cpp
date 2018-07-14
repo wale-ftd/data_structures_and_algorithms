@@ -32,6 +32,12 @@ s32 main(s32 argc, s8** argv)
     bt.insert(6, pbtn);
     bt.insert(7, pbtn);
 
+    cout << "count  = " << bt.count() << endl;
+    cout << "degree = " << bt.degree() << endl;
+    cout << "height = " << bt.height() << endl;
+
+    cout << endl;
+
     pbtn = bt.find(6);
     bt.insert(11, pbtn, BTNP_LEFT);
 

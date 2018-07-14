@@ -318,6 +318,7 @@ protected:
         }
     }
 
+    /* 计算以node为根结点的树的结点数目 */
     s32 count(GTreeNode<T> *node) const
     {
         s32 ret = 0;
@@ -335,6 +336,7 @@ protected:
         return ret;
     }
 
+    /* 计算以node为根结点的树的高度 */
     s32 height(GTreeNode<T> *node) const
     {
         s32 ret = 0;
@@ -357,6 +359,7 @@ protected:
         return ret;
     }
 
+    /* 计算以node为根结点的树的度 */
     s32 degree(GTreeNode<T> *node) const
     {
         s32 ret = 0;

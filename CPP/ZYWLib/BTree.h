@@ -136,17 +136,17 @@ public:
 
     s32 count() const
     {
-        return 0;
+        return count(root());
     }
 
     s32 degree() const
     {
-        return 0;
+        return degree(root());
     }
 
     s32 height() const
     {
-        return 0;
+        return height(root());
     }
 
     /* 将树中的所有结点清除 */
@@ -326,6 +326,81 @@ protected:
                 delete node;
             }
         }
+    }
+
+    /* 计算以node为根结点的树的结点数目 */
+    s32 count(BTreeNode<T> *node) const
+    {
+#if 0
+        s32 ret = 0;
+
+        if(node)
+        {
+            ret = count(node->left) + count(node->right) + 1;
+        }
+
+        return ret;
+#else
+        return (node ? (count(node->left)+count(node->right)+1) : 0);
+#endif
+    }
+
+    /* 计算以node为根结点的树的高度 */
+    s32 height(BTreeNode<T> *node) const
+    {
+        s32 ret = 0;
+
+        if(node)
+        {
+            s32 lch = height(node->left);
+            s32 rch = height(node->right);
+
+            ret = ((lch>rch)?lch:rch) + 1;
+        }
+
+        return ret;
+    }
+
+    /* 计算以node为根结点的树的度 */
+    s32 degree(BTreeNode<T> *node) const
+    {
+        s32 ret = 0;
+
+        if(node)
+        {
+#if 1
+            ret = (!!node->left) + (!!node->right);
+
+            BTreeNode<T> *children[] = {node->left, node->right};
+
+            for(s32 i = 0; (2>i) && (2>ret); i++)
+            {
+                s32 cd = degree(children[i]);
+
+                if(cd > ret)
+                {
+                    ret = cd;
+                }
+            }
+#else
+            s32 lcd = degree(node->left);
+            s32 rcd = degree(node->right);
+
+            ret = (!!node->left) + (!!node->right);
+
+            if(ret < lcd)
+            {
+                ret = lcd;
+            }
+
+            if(ret < rcd)
+            {
+                ret = rcd;
+            }
+#endif
+        }
+
+        return ret;
     }
 };
 

@@ -39,8 +39,11 @@ public:
     virtual TreeNode<T>* find(const T& value) const = 0;
     virtual TreeNode<T>* find(TreeNode<T> *node) const = 0;
     virtual TreeNode<T>* root() const = 0;
+    /* 计算树中结点的数目 */
     virtual s32 count() const = 0;
+    /* 获取树的度 */
     virtual s32 degree() const = 0;
+    /* 计算树的高度 */
     virtual s32 height() const = 0;
     /* 将树中的所有结点清除 */
     virtual void clear() = 0;

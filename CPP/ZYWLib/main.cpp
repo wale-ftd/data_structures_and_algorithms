@@ -44,7 +44,18 @@ s32 main(s32 argc, s8** argv)
         cout << bt.current() << " ";
     }
     cout << endl;
+    cout << endl;
 
+    cout << "---------------preorder-------------------" << endl;
+    SharedPointer< Array<s32> > spa = NULL;
+    //spa = bt.traversal(BTT_PRE_ORDER);
+    //spa = bt.traversal(BTT_IN_ORDER);
+    spa = bt.traversal(BTT_POST_ORDER);
+    for(s32 i = 0; i < (*spa).length(); i++)
+    {
+        cout << (*spa)[i] << " ";
+    }
+    cout << endl;
     cout << endl;
 
     pbtn = bt.find(6);

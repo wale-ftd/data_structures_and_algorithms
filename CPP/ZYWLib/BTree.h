@@ -278,10 +278,13 @@ public:
         return ret;
     }
 
+    /*
+     * 1. 克隆当前树的一份拷贝
+     * 2. 返回值为堆空间中的一棵新二叉树(与当前树相同)
+     */
     SharedPointer< BTree<T> > clone() const
     {
         BTree<T> *ret = new BTree<T>();
-
         if(ret)
         {
             ret->m_root = clone(root());
@@ -302,6 +305,25 @@ public:
     bool operator !=(const BTree<T>& btree)
     {
         return !(*this == btree);
+    }
+
+    /*
+     * 1. 将当前二叉树与参数btree中的数据元素在对应位置处相加
+     * 2. 返回值(相加的结果)为堆空间中的一棵新二叉树
+     */
+    SharedPointer< BTree<T> > add(const BTree<T>& btree) const
+    {
+        BTree<T> *ret = new BTree<T>();
+        if(ret)
+        {
+            ret->m_root = add(root(), btree.root());
+        }
+        else
+        {
+            THROW_EXCEPTION(NoEnoughMemoryException, "no memory to create new tree ...");
+        }
+
+        return ret;
     }
 
     ~BTree()
@@ -625,6 +647,47 @@ protected:
         else if(lh && rh)
         {
             ret = (lh->value==rh->value) && equal(lh->left, rh->left) && equal(lh->right, rh->right);
+        }
+
+        return ret;
+    }
+
+    /* 将以lh为根结点的二叉树与以rh为根结点的二叉树相加 */
+    BTreeNode<T>* add(BTreeNode<T>* lh, BTreeNode<T>* rh) const
+    {
+        BTreeNode<T> *ret = NULL;
+
+        if((!lh) && rh)
+        {
+            ret = clone(rh);
+        }
+        else if(lh && (!rh))
+        {
+            ret = clone(lh);
+        }
+        else if(lh && rh)
+        {
+            ret = BTreeNode<T>::NewNode();
+            if(ret)
+            {
+                ret->value = lh->value + rh->value;
+
+                ret->left = add(lh->left, rh->left);
+                if(ret->left)
+                {
+                    ret->left->parent = ret;
+                }
+
+                ret->right = add(lh->right, rh->right);
+                if(ret->right)
+                {
+                    ret->right->parent = ret;
+                }
+            }
+            else
+            {
+                THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create new node ...");
+            }
         }
 
         return ret;

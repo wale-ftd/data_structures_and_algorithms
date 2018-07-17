@@ -38,7 +38,7 @@ s32 main(s32 argc, s8** argv)
     cout << "height = " << bt.height() << endl;
     cout << endl;
 
-    s32 ca[] = {8, 9, 10, 7};
+    s32 ca[] = {8, 9, 10, 6, 7};
 
     cout << "----------------clone------------------" << endl;
     SharedPointer< BTree<s32> > bt_clone = bt.clone();
@@ -123,6 +123,7 @@ s32 main(s32 argc, s8** argv)
 
         cout << endl;
     }
+    cout << endl;
 
     cout << "----------------------------------" << endl;
     for(u32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
@@ -138,6 +139,63 @@ s32 main(s32 argc, s8** argv)
 
         cout << endl;
     }
+    cout << endl;
+
+    BTree<s32> bt2;
+
+    bt2.insert(0, NULL);
+
+    pbtn = bt2.find(0);
+    bt2.insert(6, pbtn);
+    bt2.insert(2, pbtn);
+
+    pbtn = bt2.find(2);
+    bt2.insert(7, pbtn);
+    bt2.insert(8, pbtn);
+
+    s32 a2[] = {6, 7, 8};
+
+    cout << "---------------create bt2-----------------" << endl;
+    for(u32 i = 0; i < (sizeof(a2)/sizeof(a2[0])); i++)
+    {
+        TreeNode<s32> *node = bt2.find(a2[i]);
+
+        while(node)
+        {
+            cout << node->value << " ";
+
+            node = node->parent;
+        }
+
+        cout << endl;
+    }
+    cout << endl;
+
+    cout << "---bt_clone add bt2, then preorder---" << endl;
+    SharedPointer< BTree<s32> > bt_add = bt_clone->add(bt2);
+    spa = bt_add->traversal(BTT_PRE_ORDER);
+    for(s32 i = 0; i < (*spa).length(); i++)
+    {
+        cout << (*spa)[i] << " ";
+    }
+    cout << endl;
+
+    s32 a_add[] = {8, 9, 10, 13, 15};
+
+    for(u32 i = 0; i < (sizeof(a_add)/sizeof(a_add[0])); i++)
+    {
+        TreeNode<s32> *node = bt_add->find(a_add[i]);
+
+        while(node)
+        {
+            cout << node->value << " ";
+
+            node = node->parent;
+        }
+
+        cout << endl;
+    }
+    cout << endl;
 
     return 0;
 }

@@ -294,6 +294,16 @@ public:
         return ret;
     }
 
+    bool operator ==(const BTree<T>& btree)
+    {
+        return equal(root(), btree.root());
+    }
+
+    bool operator !=(const BTree<T>& btree)
+    {
+        return !(*this == btree);
+    }
+
     ~BTree()
     {
         clear();
@@ -598,6 +608,23 @@ protected:
             {
                 THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create new node ...");
             }
+        }
+
+        return ret;
+    }
+
+    /* 判断lh为根结点的二叉树与rh为根结点的二叉树是否相等 */
+    bool equal(BTreeNode<T> * lh, BTreeNode<T> * rh) const
+    {
+        bool ret = false;
+
+        if(lh == rh)
+        {
+            ret = true;
+        }
+        else if(lh && rh)
+        {
+            ret = (lh->value==rh->value) && equal(lh->left, rh->left) && equal(lh->right, rh->right);
         }
 
         return ret;

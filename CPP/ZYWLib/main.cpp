@@ -57,6 +57,11 @@ s32 main(s32 argc, s8** argv)
     }
     cout << endl;
 
+    cout << "----------------compare bt with bt_clone------------------" << endl;
+    cout << "bt == *bt_clone : " << (bt == *bt_clone) << endl;
+    //cout << "bt == *bt_clone : " << (bt != *bt_clone) << endl;
+    cout << endl;
+
     cout << "----------------levelorder------------------" << endl;
     for(bt.begin(); !bt.end(); bt.next())
     {
@@ -96,6 +101,10 @@ s32 main(s32 argc, s8** argv)
 
         cout << endl;
     }
+    cout << endl;
+
+    cout << "---compare bt(after add a new node) with bt_clone---" << endl;
+    cout << "bt == *bt_clone : " << (bt == *bt_clone) << endl;
     cout << endl;
 
     SharedPointer< Tree<s32> > sp = bt.remove(3);

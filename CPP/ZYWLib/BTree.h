@@ -278,6 +278,22 @@ public:
         return ret;
     }
 
+    SharedPointer< BTree<T> > clone() const
+    {
+        BTree<T> *ret = new BTree<T>();
+
+        if(ret)
+        {
+            ret->m_root = clone(root());
+        }
+        else
+        {
+            THROW_EXCEPTION(NoEnoughMemoryException, "no memory to create new tree ...");
+        }
+
+        return ret;
+    }
+
     ~BTree()
     {
         clear();
@@ -533,6 +549,7 @@ protected:
             pre_order_traversal(node->right, lq);
         }
     }
+
     void in_order_traversal(BTreeNode<T> *node, LinkQueue<BTreeNode<T>*>& lq)
     {
         if(node)
@@ -542,6 +559,7 @@ protected:
             in_order_traversal(node->right, lq);
         }
     }
+
     void post_order_traversal(BTreeNode<T> *node, LinkQueue<BTreeNode<T>*>& lq)
     {
         if(node)
@@ -550,6 +568,39 @@ protected:
             post_order_traversal(node->right, lq);
             lq.add(node);
         }
+    }
+
+    /* copy以node为根结点的二叉树(数据元素在对应位置相等) */
+    BTreeNode<T>* clone(BTreeNode<T> *node) const
+    {
+        BTreeNode<T> *ret = NULL;
+
+        if(node)
+        {
+            ret = BTreeNode<T>::NewNode();
+            if(ret)
+            {
+                ret->value = node->value;
+
+                ret->left  = clone(node->left);
+                if(ret->left)
+                {
+                    ret->left->parent = ret;
+                }
+
+                ret->right = clone(node->right);
+                if(ret->right)
+                {
+                    ret->right->parent = ret;
+                }
+            }
+            else
+            {
+                THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create new node ...");
+            }
+        }
+
+        return ret;
     }
 };
 

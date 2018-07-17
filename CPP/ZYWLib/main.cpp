@@ -38,7 +38,26 @@ s32 main(s32 argc, s8** argv)
     cout << "height = " << bt.height() << endl;
     cout << endl;
 
-    cout << "----------------------------------" << endl;
+    s32 ca[] = {8, 9, 10, 7};
+
+    cout << "----------------clone------------------" << endl;
+    SharedPointer< BTree<s32> > bt_clone = bt.clone();
+    for(u32 i = 0; i < (sizeof(ca)/sizeof(ca[0])); i++)
+    {
+        TreeNode<s32> *node = bt_clone->find(ca[i]);
+
+        while(node)
+        {
+            cout << node->value << " ";
+
+            node = node->parent;
+        }
+
+        cout << endl;
+    }
+    cout << endl;
+
+    cout << "----------------levelorder------------------" << endl;
     for(bt.begin(); !bt.end(); bt.next())
     {
         cout << bt.current() << " ";
@@ -77,7 +96,6 @@ s32 main(s32 argc, s8** argv)
 
         cout << endl;
     }
-
     cout << endl;
 
     SharedPointer< Tree<s32> > sp = bt.remove(3);

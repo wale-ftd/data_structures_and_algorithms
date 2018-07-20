@@ -57,6 +57,8 @@ s32 main(s32 argc, s8** argv)
     }
     cout << endl;
 
+    SharedPointer< BTree<s32> > bt_clone_for_thread = bt.clone();
+
     cout << "----------------compare bt with bt_clone------------------" << endl;
     cout << "bt == *bt_clone : " << (bt == *bt_clone) << endl;
     //cout << "bt == *bt_clone : " << (bt != *bt_clone) << endl;
@@ -72,9 +74,10 @@ s32 main(s32 argc, s8** argv)
 
     cout << "---------------preorder-------------------" << endl;
     SharedPointer< Array<s32> > spa = NULL;
-    //spa = bt.traversal(BTT_PRE_ORDER);
+    spa = bt.traversal(BTT_PRE_ORDER);
     //spa = bt.traversal(BTT_IN_ORDER);
-    spa = bt.traversal(BTT_POST_ORDER);
+    //spa = bt.traversal(BTT_POST_ORDER);
+    //spa = bt.traversal(BTT_LEVEL_ORDER);
     for(s32 i = 0; i < (*spa).length(); i++)
     {
         cout << (*spa)[i] << " ";
@@ -195,6 +198,36 @@ s32 main(s32 argc, s8** argv)
 
         cout << endl;
     }
+    cout << endl;
+
+    cout << "-----------------thread---------------" << endl;
+    spa = bt_clone_for_thread->traversal(BTT_LEVEL_ORDER);
+    for(s32 i = 0; i < (*spa).length(); i++)
+    {
+        cout << (*spa)[i] << " ";
+    }
+    cout << "--- levelorder" << endl;
+
+    BTreeNode<s32> *head = bt_clone_for_thread->thread(BTT_LEVEL_ORDER);
+    BTreeNode<s32> *head_reverse = head;
+    while(head)
+    {
+        cout << head->value << " ";
+        head = head->right;
+    }
+    cout << "--- levelorder thread" << endl;
+
+    while(head_reverse->right)
+    {
+        head_reverse = head_reverse->right;
+    }
+    while(head_reverse)
+    {
+        cout << head_reverse->value << " ";
+        head_reverse = head_reverse->left;
+    }
+    cout << "--- reverselevelorder thread" << endl;
+
     cout << endl;
 
     return 0;

@@ -17,7 +17,8 @@ namespace DSaALib {
 enum BT_TRAVERSAL {
     BTT_PRE_ORDER,
     BTT_IN_ORDER,
-    BTT_POST_ORDER
+    BTT_POST_ORDER,
+    BTT_LEVEL_ORDER,
 };
 
 template <typename T>
@@ -233,33 +234,7 @@ public:
         DynamicArray<T> *ret = NULL;
         LinkQueue<BTreeNode<T>*> lq;
 
-        switch(order)
-        {
-            case BTT_PRE_ORDER:
-            {
-                pre_order_traversal(root(), lq);
-
-                break;
-            }
-            case BTT_IN_ORDER:
-            {
-                in_order_traversal(root(), lq);
-
-                break;
-            }
-            case BTT_POST_ORDER:
-            {
-                post_order_traversal(root(), lq);
-
-                break;
-            }
-            default :
-            {
-                THROW_EXCEPTION(InvalidParameterException, "Parameter order is invalid ...");
-
-                break;
-            }
-        }
+        traversal(order, lq);
 
         ret = new DynamicArray<T>(lq.length());
         if(ret)
@@ -322,6 +297,22 @@ public:
         {
             THROW_EXCEPTION(NoEnoughMemoryException, "no memory to create new tree ...");
         }
+
+        return ret;
+    }
+
+    BTreeNode<T> *thread(BT_TRAVERSAL order)
+    {
+        LinkQueue<BTreeNode<T>*> lq;
+        BTreeNode<T> *ret = NULL;
+
+        traversal(order, lq);
+
+        ret = connect(lq);
+
+        this->m_root = NULL;
+
+        m_queue.clear();
 
         return ret;
     }
@@ -602,6 +593,35 @@ protected:
         }
     }
 
+    void level_order_traversal(BTreeNode<T> *node, LinkQueue<BTreeNode<T>*>& lq)
+    {
+        if(node)
+        {
+            LinkQueue<BTreeNode<T>*> lq_tmp;
+
+            lq_tmp.add(node);
+
+            while(0 < lq_tmp.length())
+            {
+                BTreeNode<T> *n = lq_tmp.front();
+
+                if(n->left)
+                {
+                    lq_tmp.add(n->left);
+                }
+
+                if(n->right)
+                {
+                    lq_tmp.add(n->right);
+                }
+
+                lq_tmp.remove();
+
+                lq.add(n);
+            }
+        }
+    }
+
     /* copy以node为根结点的二叉树(数据元素在对应位置相等) */
     BTreeNode<T>* clone(BTreeNode<T> *node) const
     {
@@ -688,6 +708,71 @@ protected:
             {
                 THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create new node ...");
             }
+        }
+
+        return ret;
+    }
+
+    void traversal(BT_TRAVERSAL order, LinkQueue<BTreeNode<T>*>& lq)
+    {
+        switch(order)
+        {
+            case BTT_PRE_ORDER:
+            {
+                pre_order_traversal(root(), lq);
+
+                break;
+            }
+            case BTT_IN_ORDER:
+            {
+                in_order_traversal(root(), lq);
+
+                break;
+            }
+            case BTT_POST_ORDER:
+            {
+                post_order_traversal(root(), lq);
+
+                break;
+            }
+            case BTT_LEVEL_ORDER:
+            {
+                level_order_traversal(root(), lq);
+
+                break;
+            }
+            default :
+            {
+                THROW_EXCEPTION(InvalidParameterException, "Parameter order is invalid ...");
+
+                break;
+            }
+        }
+    }
+
+    BTreeNode<T> *connect(LinkQueue<BTreeNode<T>*>& lq)
+    {
+        BTreeNode<T> *ret = NULL;
+
+        if(0 < lq.length())
+        {
+            BTreeNode<T> *slider = lq.front();
+            BTreeNode<T> *lq_front = NULL;
+
+            ret = slider;
+            lq.remove();
+            slider->left = NULL;
+
+            while(0 < lq.length())
+            {
+                lq_front = lq.front();
+                slider->right = lq_front;
+                lq_front->left = slider;
+                slider = lq_front;
+                lq.remove();
+            }
+
+            slider->right = NULL;
         }
 
         return ret;

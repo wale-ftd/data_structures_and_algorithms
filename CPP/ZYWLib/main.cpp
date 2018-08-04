@@ -1,233 +1,187 @@
 #include <iostream>
-#include <string.h>
 #include "BTree.h"
 
 
 using namespace std;
 using namespace DSaALib;
 
+/* 树结点有父指针 */
+template<typename T>
+static BTreeNode<T>* delOdd(BTreeNode<T>* node)
+{
+    BTreeNode<T>* ret = NULL;
+
+    if(node)
+    {
+        if((node->left&&(!node->right)) ||
+           ((!node->left)&&node->right))
+        {
+            BTreeNode<T>* child = node->left ? node->left : node->right;
+            BTreeNode<T>* parent = dynamic_cast<BTreeNode<T>*>(node->parent);
+            if(parent)
+            {
+#if 0
+                if(parent->left == node)
+                {
+                    parent->left = child;
+                }
+                else
+                {
+                    parent->right = child;
+                }
+#else
+                BTreeNode<T>*& parent_child = (node==parent->left) ? parent->left : parent->right;
+                parent_child = child;
+#endif
+            }
+
+            child->parent = parent;
+
+            if(node->flag())
+            {
+                delete node;
+            }
+
+            ret = delOdd(child);
+        }
+        else
+        {
+            delOdd(node->left);
+            delOdd(node->right);
+
+            ret = node;
+        }
+    }
+
+    return ret;
+}
+
+/* 树结点没有父指针 */
+template<typename T>
+static BTreeNode<T>* delOddNonParent(BTreeNode<s32>* node)
+{
+
+}
+
+template < typename T >
+BTreeNode<T>* createTree()
+{
+    static BTreeNode<s32> ns[9];
+
+    for(s32 i=0; i<9; i++)
+    {
+        ns[i].value = i;
+        ns[i].parent = NULL;
+        ns[i].left = NULL;
+        ns[i].right = NULL;
+    }
+
+    ns[0].left = &ns[1];
+    ns[0].right = &ns[2];
+    ns[1].parent = &ns[0];
+    ns[2].parent = &ns[0];
+
+    ns[1].left = &ns[3];
+    ns[1].right = NULL;
+    ns[3].parent = &ns[1];
+
+    ns[2].left = &ns[4];
+    ns[2].right = &ns[5];
+    ns[4].parent = &ns[2];
+    ns[5].parent = &ns[2];
+
+    ns[3].left = NULL;
+    ns[3].right = &ns[6];
+    ns[6].parent = &ns[3];
+
+    ns[4].left = &ns[7];
+    ns[4].right = NULL;
+    ns[7].parent = &ns[4];
+
+    ns[5].left = &ns[8];
+    ns[5].right = NULL;
+    ns[8].parent = &ns[5];
+
+    return ns;
+}
+
+template < typename T >
+void prs32InOrder(BTreeNode<T>* node)
+{
+    if( node != NULL )
+    {
+        prs32InOrder(node->left);
+
+        cout << node->value <<" ";
+
+        prs32InOrder(node->right);
+    }
+}
+
+template < typename T >
+void prs32DualList(BTreeNode<T>* node)
+{
+    BTreeNode<T>* g = node;
+
+    cout << "head -> tail: " << endl;
+
+    while( node != NULL )
+    {
+        cout << node->value << " ";
+
+        g = node;
+
+        node = node->right;
+    }
+
+    cout << endl;
+
+    cout << "tail -> head: " << endl;
+
+    while( g != NULL )
+    {
+        cout << g->value << " ";
+
+        g = g->left;
+    }
+
+    cout << endl;
+}
+
 s32 main(s32 argc, s8** argv)
 {
-    BTree<s32> bt;
-    BTreeNode<s32>* pbtn = NULL;
+    BTreeNode<s32>* ns = createTree<s32>();
 
-    bt.insert(1, NULL);
-
-    pbtn = bt.find(1);
-    bt.insert(2, pbtn);
-    bt.insert(3, pbtn);
-
-    pbtn = bt.find(2);
-    bt.insert(4, pbtn);
-    bt.insert(5, pbtn);
-
-    pbtn = bt.find(4);
-    bt.insert(8, pbtn);
-    bt.insert(9, pbtn);
-
-    pbtn = bt.find(5);
-    bt.insert(10, pbtn);
-
-    pbtn = bt.find(3);
-    bt.insert(6, pbtn);
-    bt.insert(7, pbtn);
-
-    cout << "----------------------------------" << endl;
-    cout << "count  = " << bt.count() << endl;
-    cout << "degree = " << bt.degree() << endl;
-    cout << "height = " << bt.height() << endl;
+    cout << "原始树" << endl;
+    prs32InOrder(ns);
+    cout << endl;
     cout << endl;
 
-    s32 ca[] = {8, 9, 10, 6, 7};
+    cout << "删除单度结点后的树---树结点带父指针" << endl;
+    ns = delOdd(ns);
+    prs32InOrder(ns);
+    cout << endl;
+    cout << endl;
 
-    cout << "----------------clone------------------" << endl;
-    SharedPointer< BTree<s32> > bt_clone = bt.clone();
-    for(u32 i = 0; i < (sizeof(ca)/sizeof(ca[0])); i++)
+    cout << "验证父指针是否处理有效" << endl;
+    s32 a[] = {6, 7, 8};
+    for(s32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
     {
-        TreeNode<s32> *node = bt_clone->find(ca[i]);
+        TreeNode<s32> *n = ns + a[i];
 
-        while(node)
+        while(n)
         {
-            cout << node->value << " ";
+            cout << n->value;
 
-            node = node->parent;
+            n = n->parent;
+            if(n)
+            {
+                cout << "->";
+            }
         }
 
         cout << endl;
     }
-    cout << endl;
-
-    SharedPointer< BTree<s32> > bt_clone_for_thread = bt.clone();
-
-    cout << "----------------compare bt with bt_clone------------------" << endl;
-    cout << "bt == *bt_clone : " << (bt == *bt_clone) << endl;
-    //cout << "bt == *bt_clone : " << (bt != *bt_clone) << endl;
-    cout << endl;
-
-    cout << "----------------levelorder------------------" << endl;
-    for(bt.begin(); !bt.end(); bt.next())
-    {
-        cout << bt.current() << " ";
-    }
-    cout << endl;
-    cout << endl;
-
-    cout << "---------------preorder-------------------" << endl;
-    SharedPointer< Array<s32> > spa = NULL;
-    spa = bt.traversal(BTT_PRE_ORDER);
-    //spa = bt.traversal(BTT_IN_ORDER);
-    //spa = bt.traversal(BTT_POST_ORDER);
-    //spa = bt.traversal(BTT_LEVEL_ORDER);
-    for(s32 i = 0; i < (*spa).length(); i++)
-    {
-        cout << (*spa)[i] << " ";
-    }
-    cout << endl;
-    cout << endl;
-
-    pbtn = bt.find(6);
-    bt.insert(11, pbtn, BTNP_LEFT);
-
-    s32 a[] = {8, 9, 10, 11, 7};
-
-    cout << "----------------------------------" << endl;
-    for(u32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
-    {
-        TreeNode<s32> *node = bt.find(a[i]);
-
-        while(node)
-        {
-            cout << node->value << " ";
-
-            node = node->parent;
-        }
-
-        cout << endl;
-    }
-    cout << endl;
-
-    cout << "---compare bt(after add a new node) with bt_clone---" << endl;
-    cout << "bt == *bt_clone : " << (bt == *bt_clone) << endl;
-    cout << endl;
-
-    SharedPointer< Tree<s32> > sp = bt.remove(3);
-
-    cout << "----------------------------------" << endl;
-    for(u32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
-    {
-        TreeNode<s32> *node = bt.find(a[i]);
-
-        while(node)
-        {
-            cout << node->value << " ";
-
-            node = node->parent;
-        }
-
-        cout << endl;
-    }
-    cout << endl;
-
-    cout << "----------------------------------" << endl;
-    for(u32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
-    {
-        TreeNode<s32> *node = sp->find(a[i]);
-
-        while(node)
-        {
-            cout << node->value << " ";
-
-            node = node->parent;
-        }
-
-        cout << endl;
-    }
-    cout << endl;
-
-    BTree<s32> bt2;
-
-    bt2.insert(0, NULL);
-
-    pbtn = bt2.find(0);
-    bt2.insert(6, pbtn);
-    bt2.insert(2, pbtn);
-
-    pbtn = bt2.find(2);
-    bt2.insert(7, pbtn);
-    bt2.insert(8, pbtn);
-
-    s32 a2[] = {6, 7, 8};
-
-    cout << "---------------create bt2-----------------" << endl;
-    for(u32 i = 0; i < (sizeof(a2)/sizeof(a2[0])); i++)
-    {
-        TreeNode<s32> *node = bt2.find(a2[i]);
-
-        while(node)
-        {
-            cout << node->value << " ";
-
-            node = node->parent;
-        }
-
-        cout << endl;
-    }
-    cout << endl;
-
-    cout << "---bt_clone add bt2, then preorder---" << endl;
-    SharedPointer< BTree<s32> > bt_add = bt_clone->add(bt2);
-    spa = bt_add->traversal(BTT_PRE_ORDER);
-    for(s32 i = 0; i < (*spa).length(); i++)
-    {
-        cout << (*spa)[i] << " ";
-    }
-    cout << endl;
-
-    s32 a_add[] = {8, 9, 10, 13, 15};
-
-    for(u32 i = 0; i < (sizeof(a_add)/sizeof(a_add[0])); i++)
-    {
-        TreeNode<s32> *node = bt_add->find(a_add[i]);
-
-        while(node)
-        {
-            cout << node->value << " ";
-
-            node = node->parent;
-        }
-
-        cout << endl;
-    }
-    cout << endl;
-
-    cout << "-----------------thread---------------" << endl;
-    spa = bt_clone_for_thread->traversal(BTT_LEVEL_ORDER);
-    for(s32 i = 0; i < (*spa).length(); i++)
-    {
-        cout << (*spa)[i] << " ";
-    }
-    cout << "--- levelorder" << endl;
-
-    BTreeNode<s32> *head = bt_clone_for_thread->thread(BTT_LEVEL_ORDER);
-    BTreeNode<s32> *head_reverse = head;
-    while(head)
-    {
-        cout << head->value << " ";
-        head = head->right;
-    }
-    cout << "--- levelorder thread" << endl;
-
-    while(head_reverse->right)
-    {
-        head_reverse = head_reverse->right;
-    }
-    while(head_reverse)
-    {
-        cout << head_reverse->value << " ";
-        head_reverse = head_reverse->left;
-    }
-    cout << "--- reverselevelorder thread" << endl;
-
     cout << endl;
 
     return 0;

@@ -7,7 +7,9 @@ using namespace DSaALib;
 
 #define BTREE_NODE_NON_PARENT
 
-/* 树结点有父指针 */
+/**
+ * delOdd - 删除node为根结点的二叉树中的单度结点，树结点有父指针
+ */
 template<typename T>
 static BTreeNode<T>* delOdd(BTreeNode<T>* node)
 {
@@ -58,7 +60,9 @@ static BTreeNode<T>* delOdd(BTreeNode<T>* node)
     return ret;
 }
 
-/* 树结点没有父指针 */
+/**
+ * delOddNonParent - 删除node为根结点的二叉树中的单度结点，树结点没有父指针
+ */
 template<typename T>
 static BTreeNode<T>* delOddNonParent(BTreeNode<T>*& node)  /* 注意node的类型。或者传二重指针 */
 {
@@ -90,6 +94,94 @@ static BTreeNode<T>* delOddNonParent(BTreeNode<T>*& node)  /* 注意node的类型。或
     }
 
     return ret;
+}
+
+/**
+ * inOrderThread1_func - 中序线索化方法1的功能函数
+ * @node: 根结点，也是中序访问的结点
+ * @pre:  为中序遍历时的前驱结点指针
+ */
+template <typename T>
+static void inOrderThread1_func(BTreeNode<T>* node, BTreeNode<T>*& pre)
+{
+    if(node)
+    {
+        inOrderThread1_func(node->left, pre);
+
+        node->left = pre;
+
+        if(pre)
+        {
+            pre->right = node;
+        }
+
+        pre = node;
+
+        inOrderThread1_func(node->right, pre);
+    }
+}
+
+template <typename T>
+static BTreeNode<T>* inOrderThread1(BTreeNode<T>* node)
+{
+    BTreeNode<T>* pre = NULL;
+
+    inOrderThread1_func(node, pre);
+
+    while(node && node->left)
+    {
+        node = node->left;
+    }
+
+    return node;
+}
+
+/**
+ * inOrderThread2_func - 中序线索化方法2的功能函数
+ * @node: 根结点，也是中序访问的结点
+ * @head:    转换成功后指向双向链表的首结点
+ * @tail:    转换成功后指向双向链表的尾结点
+ */
+template <typename T>
+static void inOrderThread2_func(BTreeNode<T>* node, BTreeNode<T>*& head, BTreeNode<T>*& tail)
+{
+    if(node)
+    {
+        BTreeNode<T>* h = NULL;
+        BTreeNode<T>* t = NULL;
+
+        inOrderThread2_func(node->left, h, t);
+        node->left = t;
+        if(t)
+        {
+            t->right = node;
+        }
+
+        head = h ? h : node;
+
+        h = NULL;
+        t = NULL;
+
+        inOrderThread2_func(node->right, h, t);
+        node->right = h;
+        if(h)
+        {
+            h->left = node;
+        }
+
+        tail = t ? t : node;
+    }
+}
+
+template <typename T>
+static BTreeNode<T>* inOrderThread2(BTreeNode<T>* node)
+{
+    BTreeNode<T>* h = NULL;
+    BTreeNode<T>* t = NULL;
+
+    inOrderThread2_func(node, h, t);
+
+    return h;
 }
 
 template < typename T >
@@ -135,20 +227,20 @@ BTreeNode<T>* createTree()
 }
 
 template < typename T >
-void prs32InOrder(BTreeNode<T>* node)
+void printInOrder(BTreeNode<T>* node)
 {
     if( node != NULL )
     {
-        prs32InOrder(node->left);
+        printInOrder(node->left);
 
         cout << node->value <<" ";
 
-        prs32InOrder(node->right);
+        printInOrder(node->right);
     }
 }
 
 template < typename T >
-void prs32DualList(BTreeNode<T>* node)
+void printDualList(BTreeNode<T>* node)
 {
     BTreeNode<T>* g = node;
 
@@ -181,8 +273,8 @@ s32 main(s32 argc, s8** argv)
 {
     BTreeNode<s32>* ns = createTree<s32>();
 
-    cout << "原始树" << endl;
-    prs32InOrder(ns);
+    cout << "原始树中序遍历" << endl;
+    printInOrder(ns);
     cout << endl;
     cout << endl;
 
@@ -193,7 +285,7 @@ s32 main(s32 argc, s8** argv)
     cout << "删除单度结点后的树---树结点不带父指针" << endl;
     ns = delOddNonParent(ns);
 #endif
-    prs32InOrder(ns);
+    printInOrder(ns);
     cout << endl;
     cout << endl;
 
@@ -219,6 +311,11 @@ s32 main(s32 argc, s8** argv)
     }
     cout << endl;
 #endif
+
+    cout << "中序遍历线索化" << endl;
+    //ns = inOrderThread1(ns);
+    ns = inOrderThread2(ns);
+    printDualList(ns);
 
     return 0;
 }

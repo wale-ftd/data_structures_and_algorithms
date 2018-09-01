@@ -30,5 +30,7 @@ HEADERS += \
     LinkQueue.h \
     LinuxList.h \
     BTree.h \
-    BTreeNode.h
+    BTreeNode.h \
+    Stack.h \
+    StaticStack.h
 

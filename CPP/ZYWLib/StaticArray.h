@@ -6,7 +6,7 @@
 
 namespace DSaALib {
 
-template <typename T, int N>
+template <typename T, s32 N>
 class StaticArray: public Array<T>
 {
 protected:

@@ -1,7 +1,6 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-#include "Standard.h"
 #include "Object.h"
 #include "Exception.h"
 

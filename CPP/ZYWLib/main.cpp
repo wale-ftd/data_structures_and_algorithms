@@ -5,6 +5,8 @@
 using namespace std;
 using namespace DSaALib;
 
+#define BTREE_NODE_NON_PARENT
+
 /* 树结点有父指针 */
 template<typename T>
 static BTreeNode<T>* delOdd(BTreeNode<T>* node)
@@ -58,9 +60,36 @@ static BTreeNode<T>* delOdd(BTreeNode<T>* node)
 
 /* 树结点没有父指针 */
 template<typename T>
-static BTreeNode<T>* delOddNonParent(BTreeNode<s32>* node)
+static BTreeNode<T>* delOddNonParent(BTreeNode<T>*& node)  /* 注意node的类型。或者传二重指针 */
 {
+    BTreeNode<T>* ret = NULL;
 
+    if(node)
+    {
+        if((node->left&&(!node->right)) ||
+           ((!node->left)&&node->right))
+        {
+            BTreeNode<T>* child = node->left ? node->left : node->right;
+
+            if(node->flag())
+            {
+                delete node;
+            }
+
+            node = child;
+
+            ret = delOddNonParent(node);
+        }
+        else
+        {
+            delOddNonParent(node->left);
+            delOddNonParent(node->right);
+
+            ret = node;
+        }
+    }
+
+    return ret;
 }
 
 template < typename T >
@@ -157,12 +186,18 @@ s32 main(s32 argc, s8** argv)
     cout << endl;
     cout << endl;
 
+#ifndef BTREE_NODE_NON_PARENT
     cout << "删除单度结点后的树---树结点带父指针" << endl;
     ns = delOdd(ns);
+#else
+    cout << "删除单度结点后的树---树结点不带父指针" << endl;
+    ns = delOddNonParent(ns);
+#endif
     prs32InOrder(ns);
     cout << endl;
     cout << endl;
 
+#ifndef BTREE_NODE_NON_PARENT
     cout << "验证父指针是否处理有效" << endl;
     s32 a[] = {6, 7, 8};
     for(s32 i = 0; i < (sizeof(a)/sizeof(a[0])); i++)
@@ -183,6 +218,7 @@ s32 main(s32 argc, s8** argv)
         cout << endl;
     }
     cout << endl;
+#endif
 
     return 0;
 }

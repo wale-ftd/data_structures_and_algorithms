@@ -1,6 +1,6 @@
 #include <iostream>
-#include "StaticStack.h"
-
+//#include "StaticStack.h"
+#include "LinkStack.h"
 
 using namespace std;
 using namespace DSaALib;
@@ -46,7 +46,8 @@ s32 main(s32 argc, s8** argv)
         stack.pop();
     }
 #else
-    StaticStack<Test, 5> stack;
+    //StaticStack<Test, 5> stack;
+    LinkStack<Test> stack;
 
     cout << stack.size() << endl;
 #endif

@@ -15,13 +15,13 @@ protected:
     s32 m_size;    /* 当前栈的大小 */
 
 public:
-    StaticStack()
+    StaticStack()  /* O(1) */
     {
         m_top = -1;
         m_size = 0;
     }
 
-    void push(const T& e)
+    void push(const T& e)  /* O(1) */
     {
         if(N > m_size)
         {
@@ -42,7 +42,7 @@ public:
         }
     }
 
-    void pop()
+    void pop()  /* O(1) */
     {
         if(0 < m_size)
         {
@@ -55,7 +55,7 @@ public:
         }
     }
 
-    T top() const
+    T top() const  /* O(1) */
     {
         if(0 < m_size)
         {
@@ -67,18 +67,18 @@ public:
         }
     }
 
-    void clear()
+    void clear()  /* O(1) */
     {
         m_top = -1;
         m_size = 0;
     }
 
-    s32 size() const
+    s32 size() const  /* O(1) */
     {
         return m_size;
     }
 
-    s32 capacity() const
+    s32 capacity() const  /* O(1) */
     {
         return N;
     }

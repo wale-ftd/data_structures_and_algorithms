@@ -17,12 +17,12 @@ protected:
 public:
     /* 构造函数都可以不需要 */
 
-    void push(const T& e)
+    void push(const T& e)  /* O(1) */
     {
         m_list.insert(0, e);
     }
 
-    void pop()
+    void pop()  /* O(1) */
     {
         if(0 < m_list.length())
         {
@@ -34,7 +34,7 @@ public:
         }
     }
 
-    T top() const
+    T top() const  /* O(1) */
     {
         if(0 < m_list.length())
         {
@@ -46,12 +46,12 @@ public:
         }
     }
 
-    void clear()
+    void clear()  /* O(n) */
     {
         m_list.clear();
     }
 
-    s32 size() const
+    s32 size() const  /* O(1) */
     {
         return m_list.length();
     }

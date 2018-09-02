@@ -6,8 +6,23 @@ using namespace std;
 using namespace DSaALib;
 
 
+class Test: public Object
+{
+public:
+    Test()
+    {
+        cout << "Test()" << endl;
+    }
+
+    ~Test()
+    {
+        cout << "~Test()" << endl;
+    }
+};
+
 s32 main(s32 argc, s8** argv)
 {
+#if 0
     StaticStack<s32, 5> stack;
 
     try {
@@ -30,6 +45,11 @@ s32 main(s32 argc, s8** argv)
 
         stack.pop();
     }
+#else
+    StaticStack<Test, 5> stack;
+
+    cout << stack.size() << endl;
+#endif
 
     return 0;
 }

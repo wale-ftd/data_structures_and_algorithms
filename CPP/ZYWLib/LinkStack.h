@@ -5,6 +5,8 @@
 #include "Stack.h"
 #include "LinkList.h"
 
+#undef _TAIL_
+//#define _TAIL_
 
 namespace DSaALib {
 
@@ -19,14 +21,22 @@ public:
 
     void push(const T& e)  /* O(1) */
     {
+#ifndef _TAIL_
         m_list.insert(0, e);
+#else
+        m_list.insert(e);
+#endif
     }
 
     void pop()  /* O(1) */
     {
         if(0 < m_list.length())
         {
+#ifndef _TAIL_
             m_list.remove(0);
+#else
+            m_list.remove(m_list.length()-1);
+#endif
         }
         else
         {
@@ -38,7 +48,11 @@ public:
     {
         if(0 < m_list.length())
         {
+#ifndef _TAIL_
             return m_list.get(0);
+#else
+            return m_list.get(m_list.length()-1);
+#endif
         }
         else
         {

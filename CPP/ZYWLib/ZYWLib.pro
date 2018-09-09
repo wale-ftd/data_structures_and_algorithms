@@ -33,5 +33,6 @@ HEADERS += \
     BTreeNode.h \
     Stack.h \
     StaticStack.h \
-    LinkStack.h
+    LinkStack.h \
+    Graph.h
 

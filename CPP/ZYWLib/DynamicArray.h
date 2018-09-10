@@ -4,6 +4,9 @@
 #include "Standard.h"
 #include "Array.h"
 
+//#define WALE_ADD
+
+
 namespace DSaALib {
 
 template <typename T>
@@ -65,7 +68,11 @@ protected:
 
     void init(T *array, s32 a_len)    // O(1)
     {
+#ifdef WALE_ADD
         if(array && (0<a_len))
+#else
+        if(array)
+#endif
         {
             this->m_array = array;
             m_length = a_len;
@@ -79,8 +86,10 @@ protected:
 public:
     DynamicArray(s32 length = 1)  // O(1)
     {
+#ifdef WALE_ADD
         if(0 < length)
         {
+#endif
 #if 1
             init(new T[length], length);
 #else
@@ -95,11 +104,13 @@ public:
             }
 #endif
         }
+#ifdef WALE_ADD
         else
         {
             THROW_EXCEPTION(InvalidParameterException, "Parameter length is invalid ...");
         }
     }
+#endif
 
     DynamicArray(const DynamicArray<T>& obj)    // O(n)
     {

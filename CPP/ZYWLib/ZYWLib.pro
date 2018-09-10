@@ -34,5 +34,6 @@ HEADERS += \
     Stack.h \
     StaticStack.h \
     LinkStack.h \
-    Graph.h
+    Graph.h \
+    MatrixGraph.h
 

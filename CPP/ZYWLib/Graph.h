@@ -12,7 +12,7 @@ class Graph: public Object
 {
 public:
     virtual V getVertex(s32 i) = 0;
-    virtual bool getVertext(s32 i, V& value) = 0;
+    virtual bool getVertex(s32 i, V& value) = 0;
     virtual bool setVertex(s32 i, const V& value) = 0;
     virtual SharedPointer< Array<s32> > getAdjacent(s32 i) = 0;
     virtual E getEdge(s32 i, s32 j) = 0;

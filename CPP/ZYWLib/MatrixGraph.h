@@ -31,7 +31,7 @@ public:
         m_eCount = 0;
     }
 
-    V getVertex(s32 i)
+    V getVertex(s32 i)  /* O(1) */
     {
         V ret;
 
@@ -43,7 +43,7 @@ public:
         return ret;
     }
 
-    bool getVertex(s32 i, V& value)
+    bool getVertex(s32 i, V& value)  /* O(1) */
     {
         bool ret = (0<=i) && (i<vCount());
 
@@ -62,7 +62,7 @@ public:
         return ret;
     }
 
-    bool setVertex(s32 i, const V& value)
+    bool setVertex(s32 i, const V& value)  /* O(1) */
     {
         bool ret = (0<=i) && (i<vCount());
 
@@ -98,7 +98,7 @@ public:
         return ret;
     }
 
-    SharedPointer< Array<s32> > getAdjacent(s32 i)
+    SharedPointer< Array<s32> > getAdjacent(s32 i)  /* O(n) */
     {
         DynamicArray<s32> *ret = NULL;
 
@@ -140,7 +140,7 @@ public:
         return ret;
     }
 
-    E getEdge(s32 i, s32 j)
+    E getEdge(s32 i, s32 j)  /* O(1) */
     {
         E ret;
 
@@ -152,7 +152,7 @@ public:
         return ret;
     }
 
-    bool getEdge(s32 i, s32 j, E& value)
+    bool getEdge(s32 i, s32 j, E& value)  /* O(1) */
     {
         bool ret = (0<=i) && (i<vCount()) && (0<=j) && (j<vCount());
 
@@ -171,7 +171,7 @@ public:
         return ret;
     }
 
-    bool setEdge(s32 i, s32 j, const E& value)
+    bool setEdge(s32 i, s32 j, const E& value)  /* O(1) */
     {
         bool ret = (0<=i) && (i<vCount()) && (0<=j) && (j<vCount());
 
@@ -208,7 +208,7 @@ public:
         return ret;
     }
 
-    bool removeEdge(s32 i, s32 j)
+    bool removeEdge(s32 i, s32 j)  /* O(1) */
     {
         bool ret = (0<=i) && (i<vCount()) && (0<=j) && (j<vCount());
 
@@ -232,17 +232,17 @@ public:
         return ret;
     }
 
-    s32 vCount()
+    s32 vCount()  /* O(1) */
     {
         return N;
     }
 
-    s32 eCount()
+    s32 eCount()  /* O(1) */
     {
         return m_eCount;
     }
 
-    s32 OD(s32 i)
+    s32 OD(s32 i)  /* O(n) */
     {
         s32 ret = 0;
 
@@ -264,7 +264,7 @@ public:
         return ret;
     }
 
-    s32 ID(s32 i)
+    s32 ID(s32 i)  /* O(n) */
     {
         s32 ret = 0;
 

@@ -19,7 +19,7 @@ SOURCES += \
         Exception.cpp \
         Object.cpp \
     ListGraphTest.cpp \
-    GraphBFSTest.cpp
+    GraphTraversalTest.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

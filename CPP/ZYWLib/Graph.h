@@ -5,6 +5,7 @@
 #include "Array.h"
 #include "DynamicArray.h"
 #include "LinkQueue.h"
+#include "LinkStack.h"
 
 namespace DSaALib {
 
@@ -86,11 +87,63 @@ public:
 
                 if(!visited[v])
                 {
-                    SharedPointer< Array<s32> > aj = getAdjacent(v);
+                    SharedPointer< Array<s32> > adj = getAdjacent(v);
 
-                    for(s32 j = 0; j < aj->length(); j++)
+                    for(s32 j = 0; j < adj->length(); j++)
                     {
-                        q.add((*aj)[j]);
+                        q.add((*adj)[j]);
+                    }
+
+                    r.add(v);
+
+                    visited[v] = true;
+                }
+            }
+
+            ret = LinkQueue2Array(r);
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidParameterException, "Index i is invalid ...");
+        }
+
+        return ret;
+    }
+
+    SharedPointer< Array<s32> > DFS(s32 i)
+    {
+        DynamicArray<s32> *ret = NULL;
+
+        if((0<=i) && (i<vCount()))
+        {
+            LinkStack<s32> s;
+            LinkQueue<s32> r;
+            DynamicArray<bool> visited(vCount());
+
+            for(s32 j = 0; j < visited.length(); j++)
+            {
+                visited[j] = false;
+            }
+
+            s.push(i);
+
+            while(0 < s.size())
+            {
+                s32 v = s.top();
+
+                s.pop();
+
+                if(!visited[v])
+                {
+                    SharedPointer< Array<s32> > adj = getAdjacent(v);
+
+#if 0
+                    for(s32 j = 0; j < adj->length(); j++)
+#else
+                    for(s32 j = adj->length()-1; j >= 0; j--)
+#endif
+                    {
+                        s.push((*adj)[j]);
                     }
 
                     r.add(v);

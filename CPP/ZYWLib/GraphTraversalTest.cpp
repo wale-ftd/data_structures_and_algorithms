@@ -6,7 +6,7 @@ using namespace DSaALib;
 
 #define MATRIX_GRAPH_NODE_NUM (9)
 
-s32 graph_BFS_test(s32 argc, s8** argv)
+s32 graph_traversal_test(s32 argc, s8** argv)
 {
     MatrixGraph<MATRIX_GRAPH_NODE_NUM, s8, s32> mg;
     const char *VD = "ABEDCGFHI";
@@ -46,6 +46,8 @@ s32 graph_BFS_test(s32 argc, s8** argv)
     mg.setEdge(7, 8, 0);
     mg.setEdge(8, 7, 0);
 
+    cout << "---test BFS---" << endl;
+
     SharedPointer< Array<s32> > spa = mg.BFS(0);
 
     for(s32 i = 0; i < spa->length(); i++)
@@ -53,6 +55,17 @@ s32 graph_BFS_test(s32 argc, s8** argv)
         cout << (*spa)[i] << " ";
     }
     cout << endl;
+
+    cout << "---test DFS---" << endl;
+
+    spa = mg.DFS(0);
+
+    for(s32 i = 0; i < spa->length(); i++)
+    {
+        cout << (*spa)[i] << " ";
+    }
+    cout << endl;
+
 
     return 0;
 }

@@ -6,6 +6,46 @@ using namespace DSaALib;
 
 #define MATRIX_GRAPH_NODE_NUM (9)
 
+template<typename V, typename E>
+void DFS_Recursive(Graph<V, E>& g, s32 v, Array<bool>& visited)
+{
+    if((0<=v) && (v<g.vCount()))
+    {
+        cout << v << " ";
+
+        visited[v] = true;
+
+        SharedPointer< Array<s32> > adj = g.getAdjacent(v);
+
+        for(s32 i = 0; i < adj->length(); i++)
+        {
+            if(!visited[(*adj)[i]])
+            {
+                DFS_Recursive(g, (*adj)[i], visited);
+            }
+        }
+    }
+    else
+    {
+        THROW_EXCEPTION(InvalidParameterException, "Index v is invalid ...");
+    }
+}
+
+template<typename V, typename E>
+void DFS_Recursive(Graph<V, E>& g, s32 v)
+{
+    DynamicArray<bool> visited(g.vCount());
+
+    for(s32 i = 0; i < visited.length(); i++)
+    {
+        visited[i] = false;
+    }
+
+    DFS_Recursive(g, v, visited);
+
+    cout << endl;
+}
+
 s32 graph_traversal_test(s32 argc, s8** argv)
 {
     MatrixGraph<MATRIX_GRAPH_NODE_NUM, s8, s32> mg;
@@ -66,6 +106,9 @@ s32 graph_traversal_test(s32 argc, s8** argv)
     }
     cout << endl;
 
+    cout << "---test DFS_Recursive---" << endl;
+
+    DFS_Recursive(mg, 0);
 
     return 0;
 }

@@ -3,7 +3,8 @@
 
 #include "SharedPointer.h"
 #include "Array.h"
-
+#include "DynamicArray.h"
+#include "LinkQueue.h"
 
 namespace DSaALib {
 
@@ -58,6 +59,75 @@ public:
     virtual s32 TD(s32 i)
     {
         return OD(i) + ID(i);
+    }
+
+    SharedPointer< Array<s32> > BFS(s32 i)
+    {
+        DynamicArray<s32> *ret = NULL;
+
+        if((0<=i) && (i<vCount()))
+        {
+            LinkQueue<s32> q;
+            LinkQueue<s32> r;
+            DynamicArray<bool> visited(vCount());
+
+            for(s32 j = 0; j < visited.length(); j++)
+            {
+                visited[j] = false;
+            }
+
+            q.add(i);
+
+            while(0 < q.length())
+            {
+                s32 v = q.front();
+
+                q.remove();
+
+                if(!visited[v])
+                {
+                    SharedPointer< Array<s32> > aj = getAdjacent(v);
+
+                    for(s32 j = 0; j < aj->length(); j++)
+                    {
+                        q.add((*aj)[j]);
+                    }
+
+                    r.add(v);
+
+                    visited[v] = true;
+                }
+            }
+
+            ret = LinkQueue2Array(r);
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidParameterException, "Index i is invalid ...");
+        }
+
+        return ret;
+    }
+
+protected:
+    template<typename T>
+    DynamicArray<T>* LinkQueue2Array(LinkQueue<T>& lq)
+    {
+        DynamicArray<T> *ret = new DynamicArray<T>(lq.length());
+
+        if(ret)
+        {
+            for(s32 i = 0; i < ret->length(); i++, lq.remove())
+            {
+                ret->set(i, lq.front());
+            }
+        }
+        else
+        {
+            THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create ret object ...");
+        }
+
+        return ret;
     }
 };
 

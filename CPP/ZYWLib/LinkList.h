@@ -16,7 +16,7 @@ protected:
     };
 
 #if 1
-    /* 注意：这里也要继承自Object，否则匿名类和struct Node在内存里的布局可以不同。 */
+    /* 注意：这里也要继承自Object，否则匿名类和struct Node在内存里的布局可能不同。 */
     mutable struct : public Object {
         s8 reserved[sizeof(T)];
         Node *next;

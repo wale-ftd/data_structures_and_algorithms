@@ -7,6 +7,37 @@
 
 namespace DSaALib {
 
+template <typename E>
+struct Edge: public Object
+{
+    s32 b;  /* 起始顶点 */
+    s32 e;  /* 邻接顶点 */
+    E data; /* 权值 */
+
+    Edge(s32 i = -1, s32 j = -1)
+    {
+        b = i;
+        e = j;
+    }
+
+    Edge(s32 i, s32 j, const E& value)
+    {
+        b = i;
+        e = j;
+        data = value;
+    }
+
+    bool operator ==(const Edge<E>& obj)
+    {
+        return ((b==obj.b) && (e==obj.e));
+    }
+
+    bool operator !=(const Edge<E>& obj)
+    {
+        return (!(*this == obj));
+    }
+};
+
 template <typename V, typename E>
 class Graph: public Object
 {
